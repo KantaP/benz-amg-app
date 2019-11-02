@@ -24,17 +24,17 @@
     ],
     "ios": {
       "bundleIdentifier": "com.i3gateway.benzamg",
-      "supportsTablet": false ,
-      "config" : {
-        "googleMapsApiKey" : "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
+      "supportsTablet": false,
+      "config": {
+        "googleMapsApiKey": "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
       }
     },
-    "android" : {
-      "package" : "com.i3gateway.benzamg" ,
-      "config" : {
-        "googleMaps" : {
-          "apiKey" : "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
-        } 
+    "android": {
+      "package": "com.i3gateway.benzamg",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
+        }
       },
       "googleServicesFile": "./google-services.json"
     }

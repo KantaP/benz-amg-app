@@ -12,7 +12,7 @@ import {
 } from '@shoutem/ui';
 
 import { ScrollView , KeyboardAvoidingView , TouchableOpacity } from 'react-native';
-import { navigatorBarStyle, formButtonStyle  , navTitle} from '../styles';
+import { navigatorBarStyle, formButtonStyle  , navTitle , colorScheme} from '../styles';
 import { FontAwesomeIcon  } from '../Icon'; 
 import _ from 'lodash';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -265,6 +265,7 @@ const ManageUserProfileScreen = (
                         </View>
                     </View>,
                     <DateTimePicker
+                        isDarkModeEnabled={colorScheme === 'dark' ? true : false}
                         isVisible={datepicker.isDateTimePickerVisible}
                         onConfirm={onConfirmDatePicker}
                         onCancel={onHideDatePicker}
