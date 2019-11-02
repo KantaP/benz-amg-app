@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "benz-amg",
+    "slug": "benz-amg",
+    "privacy": "public",
+    "sdkVersion": "35.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#191919"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.i3gateway.benzamg",
+      "supportsTablet": false ,
+      "config" : {
+        "googleMapsApiKey" : "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
+      }
+    },
+    "android" : {
+      "package" : "com.i3gateway.benzamg" ,
+      "config" : {
+        "googleMaps" : {
+          "apiKey" : "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
+        } 
+      },
+      "googleServicesFile": "./google-services.json"
+    }
+  }
+}

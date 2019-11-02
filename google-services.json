@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "373063885455",
+    "firebase_url": "https://benz-amg.firebaseio.com",
+    "project_id": "benz-amg",
+    "storage_bucket": "benz-amg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373063885455:android:f2ef2b2d0e591681",
+        "android_client_info": {
+          "package_name": "com.i3gateway.benzamg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373063885455-terr45gj7k50i57pmdpag5mue7r7itrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_pEohtaN-i5K5mz6XgKUE7LHBOdcMIP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373063885455-terr45gj7k50i57pmdpag5mue7r7itrc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
