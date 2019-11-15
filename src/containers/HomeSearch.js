@@ -18,7 +18,16 @@ class HomeSearchContainer extends React.Component {
         nextToken: ''
     }
 
+    loadMore = false
+
     onSearch = async() => {
+        if(!this.state.searchText) {
+            await this.setState({
+                posts: [],
+                nextToken: ''
+            })
+            return;
+        }
         await this.setState({loading: true , submitSearch: true});
         let filter = {
             or: [
@@ -39,12 +48,17 @@ class HomeSearchContainer extends React.Component {
     }
 
     loadMore = async() => {
-        let loadMorePosts = await API.graphql(graphqlOperation(listPosts , {nextToken: this.state.nextToken}));
-        await this.setState((prevState)=>{
-            prevState.posts = [...this.state.posts , ...loadMorePosts.data.listPosts.items];
-            prevState.nextToken = loadMorePosts.data.listPosts.nextToken;
-            return prevState
-        });
+        if(this.state.nextToken && !this.loadMore) {
+            this.loadMore = true;
+            let loadMorePosts = await API.graphql(graphqlOperation(listPosts , {nextToken: this.state.nextToken}));
+            await this.setState((prevState)=>{
+                prevState.posts = [...this.state.posts , ...loadMorePosts.data.listPosts.items];
+                prevState.nextToken = loadMorePosts.data.listPosts.nextToken;
+                return prevState
+            });
+            this.loadMore = false;
+        }
+        
     }
 
 

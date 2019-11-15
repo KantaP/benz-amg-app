@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image , AppState } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createAppContainer , createBottomTabNavigator } from 'react-navigation';
-import { AppLoading } from 'expo';
+import { AppLoading , Updates } from 'expo';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
 import * as Localization from 'expo-localization';
@@ -57,7 +57,9 @@ Amplify.configure(config)
 import { FontAwesomeIcon , AntDesignIcon , EntypoIcon } from './components/Icon';
 
 import {
-  View
+  View ,
+  Text,
+  Button
 } from '@shoutem/ui';
 
 import Toast from 'react-native-easy-toast';
@@ -79,7 +81,10 @@ const PostStack = createStackNavigator({
   MapView: MapViewContainer ,
   TagSearch: TagSearchContainer ,
   Contact: ContactContaienr ,
-  ChatHistories: ChatHistoriesContainer
+})
+
+const ConnectStack = createStackNavigator({
+  Connect: ConnectContainer ,
 })
 
 const HomeStack = createStackNavigator({
@@ -89,19 +94,29 @@ const HomeStack = createStackNavigator({
   ReferTo: ReferToContainer ,
   Contact: ContactContaienr ,
   EditPost: CreatePostContainer,
-  Connect: ConnectContainer ,
   ChatHistories: ChatHistoriesContainer,
-  HomeSearch: HomeSearchContainer
+  HomeSearch: HomeSearchContainer,
+  MapView: MapViewContainer ,
+  TagSearch: TagSearchContainer ,
+})
+
+const UserDetailStack = createStackNavigator({
+  UserDetail : UserDetailContainer ,
+  ReferTo: ReferToContainer ,
+  ChatHistories: ChatHistoriesContainer
 })
 
 const DirectoyStack = createStackNavigator({
   Directory: DirectoryContainer ,
-  UserDetail : UserDetailContainer ,
+  UserDetailTop: UserDetailStack,
   Contact: ContactContaienr ,
   CompanyDetail: CompanyDetailContainer,
   PostDetail: PostDetailContainer ,
-  Connect: ConnectContainer ,
-  ChatHistories: ChatHistoriesContainer
+},{
+  defaultNavigationOptions: ({ navigation }) => ({
+    mode: 'modal',
+    header: null,
+  })
 })
 
 const EventStack = createStackNavigator({
@@ -120,10 +135,15 @@ const ProfileStack = createStackNavigator({
   Block: BlockContaienr ,
   ChangePassword: ChangePasswordContainer ,
   Term : TermContainer,
-  PostDetail: PostDetailContainer ,
   Contact: ContactContaienr,
-  ChatHistories: ChatHistoriesContainer
+  PostDetail: PostDetailContainer,
+  ReferTo: ReferToContainer ,
+  ChatHistories: ChatHistoriesContainer,
+  MapView: MapViewContainer ,
+  TagSearch: TagSearchContainer ,
+  EditPost: CreatePostContainer,
 })
+
 
 
 const AppStack = createBottomTabNavigator({ 
@@ -132,7 +152,6 @@ const AppStack = createBottomTabNavigator({
   Event: EventStack ,
   Directory : DirectoyStack ,
   Profile: ProfileStack ,
-  
 },{
   navigationOptions: ({navigation}) => ({
     tabBarVisible: navigation.state.index === 0
@@ -141,7 +160,6 @@ const AppStack = createBottomTabNavigator({
     showLabel: false ,
     activeBackgroundColor : "#C43835" ,
     inactiveBackgroundColor: "#fff" ,
-    
   } ,
   defaultNavigationOptions: ({ navigation }) => ({
     mode: 'modal',
@@ -179,18 +197,30 @@ const AppStack = createBottomTabNavigator({
     },
   })
 });
+
+
+const AppTopStack = createStackNavigator({
+   App: AppStack,
+   Connect: ConnectStack
+},{
+  defaultNavigationOptions: ({ navigation }) => ({
+    mode: 'modal',
+    header: null,
+  })
+})
+
 const AuthStack = createStackNavigator({ 
   SignIn: SignInContainer ,
   
 });
 const AppContainer = createAppContainer(createSwitchNavigator(
   {
-    App: AppStack,
+    App: AppTopStack,
     Auth: AuthStack,
     AuthLoading: AuthLoadingContainer ,
     FirstTerm: FirstTermContainer,
     Tutorial: TutorialContainer,
-    Post: PostStack
+    Post: PostStack,
   },
   {
     initialRouteName: 'AuthLoading',
@@ -218,6 +248,7 @@ export default class App extends React.Component {
   state = {
       isReady: false ,
       locale: Localization.locale ,
+      showUpdate: false
   }
 
   // cacheImages(images) {
@@ -273,6 +304,15 @@ export default class App extends React.Component {
     
   componentDidMount() {
     // AppState.addEventListener('change', this._handleAppStateChange);
+    Updates.checkForUpdateAsync().then(update => {
+      if (update.isAvailable) {
+        this.setState({showUpdate: true});
+      }
+    });
+  }
+
+  doUpdate = () => {
+    Updates.reload();
   }
 
   render() {
@@ -306,6 +346,7 @@ export default class App extends React.Component {
                     fadeInDuration={750}
                     fadeOutDuration={1000}
                   />
+                   
                   {/* </ActionSheetProvider> */}
                 {/* </StyleProvider> */}
               </PersistGate>

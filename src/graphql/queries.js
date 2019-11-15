@@ -27,6 +27,7 @@ export const getUser = `query GetUser($id: ID!) {
     expireAt
     level
     createdAt
+    firstLogin
     images {
       items {
         id
@@ -3206,6 +3207,177 @@ export const itemsByPostType = `query ItemsByPostType(
       expireRedeemAtUnix
       redeemImage
       redeemDescription
+    }
+    nextToken
+  }
+}
+`;
+
+export const itemsByPinCreated = `query ItemsByPinCreated(
+  $pin: String
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelPostFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  itemsByPinCreated(
+    pin: $pin
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      content
+      enableComment
+      tags
+      location {
+        placeName
+        placeLatLng
+      }
+      postImages {
+        nextToken
+      }
+      postComments {
+        nextToken
+      }
+      postOfUser {
+        id
+        staffID
+        username
+        birthDate
+        firstName
+        lastName
+        mobilePhone
+        email
+        amgId
+        amgModel
+        amgShowroom
+        nickName
+        citizenId
+        image
+        address
+        subDistrict
+        district
+        province
+        active
+        pushToken
+        type
+        expireAt
+        level
+        createdAt
+        memberShipPrice
+        firstLogin
+      }
+      owner
+      type
+      createdAt
+      refers {
+        nextToken
+      }
+      postBookmarks {
+        nextToken
+      }
+      reports {
+        nextToken
+      }
+      postRadeem {
+        nextToken
+      }
+      countComment
+      countRefer
+      countRadeem
+      countBookmark
+      countReport
+      countConnect
+      radeemQuota
+      expireAtUnix
+      expireAt
+      expire
+      pin
+      createdAtUnix
+      expireRedeemAt
+      expireRedeemAtUnix
+      redeemImage
+      redeemDescription
+    }
+    nextToken
+  }
+}
+`;
+
+export const eventsSortByStartTime = `query EventsSortByStartTime(
+  $hashStatus: String
+  $startTime: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  eventsSortByStartTime(
+    hashStatus: $hashStatus
+    startTime: $startTime
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      title
+      startTime
+      endTime
+      description
+      image
+      images {
+        nextToken
+      }
+      quota
+      eventJoineds {
+        items {
+          id
+          userId
+        }
+        nextToken
+      }
+      location {
+        placeName
+        placeLatLng
+      }
+      createdAt
+      upcoming
+      hashStatus
+      user {
+        id
+        staffID
+        username
+        birthDate
+        firstName
+        lastName
+        mobilePhone
+        email
+        amgId
+        amgModel
+        amgShowroom
+        nickName
+        citizenId
+        image
+        address
+        subDistrict
+        district
+        province
+        active
+        pushToken
+        type
+        expireAt
+        level
+        createdAt
+        memberShipPrice
+        firstLogin
+      }
     }
     nextToken
   }

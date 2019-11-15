@@ -69,7 +69,7 @@ const DirectoryScreen = ({navigation , notification}) => (
         <DirectoryListView
             onCellSelect={(user)=>{
                 // console.log(user);
-                navigation.push('UserDetail' , {user})
+                navigation.push('UserDetailTop' , {user})
             }}
         />
     </Screen>

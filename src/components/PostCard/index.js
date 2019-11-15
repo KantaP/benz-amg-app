@@ -4,10 +4,10 @@ import {
     View ,
     Text ,
     Image ,
-    Button , 
+    Button as BT, 
     InlineGallery,
     ImageGalleryOverlay,
-    TouchableOpacity,
+    TouchableOpacity as TouchEx,
     Caption
 } from '@shoutem/ui';
 import { formButtonStyle } from '../styles';
@@ -22,7 +22,12 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { API, graphqlOperation } from 'aws-amplify';
 import { listPostConnects , listPostRadeemSeconds } from '../../graphql/queries';
 import toastRefService from '../../services/ToastRefService';
+import WithPreventDoubleClick from '../WithPreventDoubleClick';
+
 const { width } = Dimensions.get('window');
+
+const TouchableOpacity = WithPreventDoubleClick(TouchEx);
+const Button = WithPreventDoubleClick(BT);
 
 class PostCard extends React.Component {
 
@@ -50,6 +55,18 @@ class PostCard extends React.Component {
             justifyContent: 'center',
             // paddingHorizontal: 6 , 
             backgroundColor:'#C43835' ,
+            marginRight: 5
+        },
+        iconInStackOff: {
+            width: 22 , 
+            height: 22 , 
+            borderRadius: 11 , 
+            // paddingVertical: 5 , 
+            display:'flex',
+            flexDirection:'row',
+            justifyContent: 'center',
+            // paddingHorizontal: 6 , 
+            backgroundColor:'#CCC' ,
             marginRight: 5
         },
         stack :{ 
@@ -188,18 +205,23 @@ class PostCard extends React.Component {
 
     onViewImage = () => {
         // let photoSource = this.state.photos[this.state.photoIndexSelected].source;
-        let photoSource = { uri : this.props.post.postImages.items[this.state.photoIndexSelected].uri }
+        let photoSource = null;
+        if(Platform.OS === 'ios') {
+            photoSource = this.props.post.postImages.items[this.state.photoIndexSelected].uri
+        } else {
+            photoSource =  this.props.post.postImages.items[this.state.photoIndexSelected].uri
+        }
         ImageRN.getSize( photoSource, async( Width, Height ) =>
         {
             // console.log('img width'  , Width) ;
             // console.log('img Height'  , Height)
             await this.setState({
                 imageViewModelVisible: true , 
-                imageViewSelectedSource: photoSource , 
+                imageViewSelectedSource: { uri : photoSource } , 
                 imageViewHeight: (Width * 30) / 100, 
                 imageViewWidth: (Height * 30) / 100
             })
-
+ 
         },(errorMsg) =>
         {
             console.log( errorMsg );
@@ -240,39 +262,57 @@ class PostCard extends React.Component {
        <Card style={{width , flex: 1 , borderBottomWidth: 10 , borderBottomColor:'#eee'}}>
            {/* Card header */}
             <View styleName="horizontal v-center space-between" style={{paddingLeft: 0 , paddingRight: 0}}>
+                
                 <View styleName="horizontal v-center" style={{paddingLeft: 5}}>
+                {
+                    (this.props.post.type.toLowerCase() === 'broadcast' || this.props.post.type.toLowerCase() === 'privilege') 
+                    ?
                     <View
-                        styleName="horizontal h-center v-center"
-                        style={{
-                            width: 50 , 
-                            height: 50 , 
-                            borderRadius: 25 ,
-                            borderWidth: (this.props.post.type === 'broadcast' || this.props.post.type === 'privilege') ? 3 : 0,
+                        styleName="vertical h-center v-center"
+                        style={
+                        {
+                            width: 55 , 
+                            height: 55, 
+                            borderRadius: 55 / 2  ,
+                            borderWidth: 3,
                             borderColor:'#C43835',
-                            overflow: 'hidden' 
-                            // backgroundColor:'#000', 
+                            // overflow: 'hidden' ,
+                            // padding: 5
+                            backgroundColor: '#000', 
                         }}
                     >
                        
                             <Image 
                                 style={{
-                                    backgroundColor:'#000',
-                                    width: 48 , 
-                                    height: 48 , 
-                                    borderRadius: 48 / 2,
+                                    // backgroundColor:'#000',
+                                    width: 50, 
+                                    height: 50 , 
+                                    borderRadius: 50/ 2,
                                     flex: 1
                                 }}
                                 resizeMode="contain"
-                                source={
-                                    (this.props.post.type === 'broadcast' || this.props.post.type === 'privilege')
-                                    ? require('../../assets/images/logo.png')
-                                    : (this.props.post.postOfUser.image) 
-                                        ? { uri : this.props.post.postOfUser.image }
-                                        : require('../../assets/images/user-blank.jpg')
-                                }
+                                source={require('../../assets/images/logo.png')}
                             />
                        
                     </View>
+                    :
+                    <View>
+                        <Image 
+                            style={{
+                                width: 50, 
+                                height: 50 , 
+                                borderRadius: 50 / 2 ,
+                                // flex: 1
+                            }}
+                            
+                            source={
+                                (this.props.post.postOfUser.image) 
+                                ? { uri : this.props.post.postOfUser.image }
+                                : require('../../assets/images/user-blank.jpg')
+                            }
+                        />
+                    </View>
+                }
                     
                     <View styleName="vertical" style={{marginLeft : 20}}>
                         {
@@ -287,7 +327,10 @@ class PostCard extends React.Component {
                 {
                     //  Activity Tab
                     (
-                        (this.props.userProfile.id !== this.props.post.owner) &&
+                        (
+                            (this.props.userProfile.id !== this.props.post.owner) || 
+                            (this.props.post.type.toLowerCase() === 'broadcast' || this.props.post.type.toLowerCase() === 'privilege')
+                        ) &&
                         (this.props.showActivityTab)
                     ) &&
                     (
@@ -337,6 +380,7 @@ class PostCard extends React.Component {
                 }
                 {
                     (this.props.userProfile.id === this.props.post.owner) &&
+                    (this.props.post.type.toLowerCase() === 'post') &&
                     (
                         <View styleName="horizontal">
                             <Button onPress={()=>{
@@ -387,7 +431,7 @@ class PostCard extends React.Component {
                             </View>
                             
                             {
-                                (moment(this.props.post.expireRedeemAt).isAfter(moment())) 
+                                (moment(this.props.post.expireRedeemAt).isSameOrAfter(moment())) 
                                 ? (this.props.post.postRadeem.items.length > 0)
                                 
                                     ? (
@@ -397,11 +441,11 @@ class PostCard extends React.Component {
                                         style={Object.assign({} , 
                                         this.style.stack, 
                                         {
-                                            backgroundColor:'#C43835' , 
+                                            backgroundColor:'#CCC' , 
                                             paddingHorizontal: 7,
                                             borderRadius: 10
                                         })}>
-                                            <View styleName="horizontal v-center" style={this.style.iconInStack}>
+                                            <View styleName="horizontal v-center" style={this.style.iconInStackOff}>
                                                 <AntDesignIcon name="gift" style={{fontSize: 12 , color:'#fff'}} />
                                             </View>
                                             <Caption style={{color:'#fff'}}>Redeemed</Caption>
@@ -439,11 +483,11 @@ class PostCard extends React.Component {
                                         style={Object.assign({} , 
                                         this.style.stack, 
                                         {
-                                            backgroundColor:'#C43835' , 
+                                            backgroundColor:'#ccc' , 
                                             paddingHorizontal: 7,
                                             borderRadius: 10
                                         })}>
-                                            <View styleName="horizontal v-center" style={this.style.iconInStack}>
+                                            <View styleName="horizontal v-center" style={this.style.iconInStackOff}>
                                                 <AntDesignIcon name="gift" style={{fontSize: 12 , color:'#fff'}} />
                                             </View>
                                             <Caption style={{color:'#fff'}}>Expired</Caption>
@@ -483,7 +527,7 @@ class PostCard extends React.Component {
                     </View>
 
                     {
-                        this.props.post.type !== 'privilege' &&
+                        this.props.post.type.toLowerCase() === 'post' &&
                         (
                             <View styleName="horizontal  v-center"  style={this.style.stack}>
                                 <View styleName="horizontal v-center" style={this.style.iconInStack}>
@@ -547,7 +591,7 @@ class PostCard extends React.Component {
                                 <Text>Refer</Text>
                             </Button>
                             {
-                                this.props.post.type !== 'privilege' && 
+                                this.props.post.type === 'post' && 
                                 this.props.post.owner !== this.props.userProfile.id &&
                                 (
                                     <Button 

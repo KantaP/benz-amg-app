@@ -3,7 +3,7 @@ import {
     Screen ,
     View ,
     NavigationBar , 
-    Button , 
+    Button as BT , 
     Image ,
     Title ,
     Text ,
@@ -16,6 +16,9 @@ import MyPostsView from './MyPosts';
 import BookmarkView from './Bookmark';
 import PriviledgeView from './Priviledge';
 import ReferView from './Refer';
+import WithPreventDoubleClick from '../WithPreventDoubleClick';
+
+const Button = WithPreventDoubleClick(BT);
 
 const UserProfileScreen = ({navigation , userProfile , state , onSelectTab , onSignOut , notification }) => (
     <Screen style={{backgroundColor:'#fff'}}>

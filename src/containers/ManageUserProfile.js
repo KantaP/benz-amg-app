@@ -88,6 +88,7 @@ class ManageUserProfileContainer extends React.Component {
     
 
     callbackImagePicker = (result) => {
+        console.log(result);
         if (!result.cancelled) {
             this.setState((state)=>{
                 state.userProfile.image = result.uri

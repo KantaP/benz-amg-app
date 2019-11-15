@@ -12,6 +12,9 @@ import {
     Title
 } from '@shoutem/ui';
 import { SimpleLineIcon } from '../Icon';
+import { PostPlaceHolder } from '../PostPlaceHolder';
+
+let loadMore = false;
 
 
 const ListMyEvent = ({navigation , startTimeUnix , userProfile}) => (
@@ -25,10 +28,11 @@ const ListMyEvent = ({navigation , startTimeUnix , userProfile}) => (
             }
         }}
         fetchPolicy="network-only"
+        errorPolicy="ignore"
     >
         {
             ({data , loading , error , fetchMore }) => {
-                if(loading) return null;
+                if(loading) return <View style={{padding: 10}}><PostPlaceHolder /></View>;
                 // console.log({limit: 10 , filter: {createdAtUnix: {ge: createdAtUnix}}});
                 if(data.listUserJoinedEvents.items.length === 0) {
                     return (
@@ -49,32 +53,42 @@ const ListMyEvent = ({navigation , startTimeUnix , userProfile}) => (
                             // mappedItem['eventJoineds']['items'] = [mappedItem.eventJoined];
                             // console.log('mappeditem' , mappedItem)
                             item.eventJoined.joinId = item.id;
-                            return <EventItem event={item.eventJoined} navigation={navigation} />
+                            return <EventItem event={item.eventJoined}  navigation={navigation} />
                         }} 
                         initialNumToRender={8}
                         maxToRenderPerBatch={2} 
                         onEndReachedThreshold={0.5}
                         onEndReached={()=>{
-                            fetchMore({
-                                variables: {
-                                    nextToken: data.listUserJoinedEvents.nextToken
-                                },
-                                updateQuery: (prev, { fetchMoreResult }) => {
-                                    if (!fetchMoreResult) return prev;
-                                    let concatArray = [...prev.listUserJoinedEvents.items , ...fetchMoreResult.listUserJoinedEvents.items];
-                                    let uniqueValue = getUnique(concatArray , 'id');
-                                    let newItems = Object.assign({}, prev, {
-                                        listUserJoinedEvents: Object.assign({} , prev.listUserJoinedEvents , {
-                                            items: [...uniqueValue] ,
-                                            nextToken : fetchMoreResult.listUserJoinedEvents.nextToken
-                                        }),
-                                        
-                                    });
-                                    return newItems;
-                                }
-                            })
+                            if(data.listUserJoinedEvents.nextToken && !loadMore) {
+                                loadMore = true;
+                                fetchMore({
+                                    variables: {
+                                        nextToken: data.listUserJoinedEvents.nextToken
+                                    },
+                                    updateQuery: (prev, { fetchMoreResult }) => {
+                                        if (!fetchMoreResult) return prev;
+                                        let concatArray = [...prev.listUserJoinedEvents.items , ...fetchMoreResult.listUserJoinedEvents.items];
+                                        let uniqueValue = getUnique(concatArray , 'id');
+                                        let newItems = Object.assign({}, prev, {
+                                            listUserJoinedEvents: Object.assign({} , prev.listUserJoinedEvents , {
+                                                items: [...uniqueValue] ,
+                                                nextToken : fetchMoreResult.listUserJoinedEvents.nextToken
+                                            }),
+                                            
+                                        });
+                                        loadMore = false;
+                                        return newItems;
+                                    }
+                                })
+                            }
+                            
                         }}
-                        
+                        ListFooterComponent={()=>{
+                            if(loadMore) {
+                                return <PostPlaceHolder />
+                            }
+                            return null
+                        }}
                     />
                 )
             }

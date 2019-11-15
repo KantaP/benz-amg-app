@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View  , Image , Title , TextInput , Caption } from '@shoutem/ui';
+import { View  , Image , Title , TextInput , Caption , Text } from '@shoutem/ui';
 import { AntDesignIcon } from './Icon';
 import { TouchableOpacity , FlatList } from 'react-native';
 import _ from 'lodash';
@@ -92,8 +92,8 @@ class ListUserItem extends React.Component {
                                                 : require('../assets/images/user-blank.jpg')
                                             }
                                         />
-                                        <View styleName="vertical" style={{marginLeft : 15}}>
-                                            <Title>{user.firstName} {user.lastName}</Title>
+                                        <View styleName="vertical" style={{marginLeft : 15 , flex: 0.75}}>
+                                            <Text numberOfLines={2}>{user.firstName} {user.lastName}</Text>
                                             <View style={{marginTop: -7}}>
                                                 <Caption>
                                                     {

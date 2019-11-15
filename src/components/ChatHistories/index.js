@@ -6,13 +6,13 @@ import {
     View ,
     NavigationBar ,
     Title ,
-    Button ,
+    Button as BT ,
     Text,
     Caption,
     Image,
-    TouchableOpacity
+    TouchableOpacity as TouchEx
 } from '@shoutem/ui';
-import { navigatorBarStyle , navTitle } from '../styles';
+import { navigatorBarStyle , navTitle , redColor } from '../styles';
 import { FontAwesomeIcon } from '../Icon'; 
 import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
@@ -22,6 +22,10 @@ import moment from 'moment';
 import Swipeable from 'react-native-swipeable';
 import gql from 'graphql-tag';
 import alertService from '../../services/AlertService';
+import WithPreventDoubleClick from '../WithPreventDoubleClick';
+
+const Button = WithPreventDoubleClick(BT);
+const TouchableOpacity = WithPreventDoubleClick(TouchEx);
 
 const ChatHistoriesScreen = ({navigation , userProfile , state , onCallback , onGetChannel}) => (
     <Screen>
@@ -42,32 +46,45 @@ const ChatHistoriesScreen = ({navigation , userProfile , state , onCallback , on
             style={navigatorBarStyle}
             styleName="inline"
         />
-        <FlatList
-            removeClippedSubViews
-            data={state.channelList}
-            keyExtractor={(item, index)=>index}
-            renderItem={({item}) => {
-                return (
-                    <ChatItem 
-                        channelItem={item} 
-                        userProfile={userProfile} 
-                        navigation={navigation} 
-                        onCallback={onCallback}
-                        onGetChannel={onGetChannel}
-                    />
-                )
-            }}
-            initialNumToRender={8}
-            maxToRenderPerBatch={2}
-            // onEndReachedThreshold={0.5}
-            // onEndReached={()=>{
-            //     // this.props.loadMore();
-            // }}
-            // refreshing={this.props.refreshing}
-            // onRefresh={()=>{ 
-            //     // this.props.refetch();
-            // }}
-        />
+        {
+            state.channelList.length === 0 &&
+            (
+                <View styleName="vertical v-center h-center" style={{flex: 1}}>
+                    <Title style={{color:'#ccc' , fontWeight:'bold'}}>No Chat History</Title>
+                    <Caption style={{color:'#ccc'}}>This page will show data after you have chat history</Caption>
+                </View>
+            )
+        }
+        {
+            state.channelList.length > 0 &&
+            <FlatList
+                removeClippedSubViews
+                data={state.channelList}
+                keyExtractor={(item, index)=>index}
+                renderItem={({item}) => {
+                    return (
+                        <ChatItem 
+                            channelItem={item} 
+                            userProfile={userProfile} 
+                            navigation={navigation} 
+                            onCallback={onCallback}
+                            onGetChannel={onGetChannel}
+                        />
+                    )
+                }}
+                initialNumToRender={8}
+                maxToRenderPerBatch={2}
+                // onEndReachedThreshold={0.5}
+                // onEndReached={()=>{
+                //     // this.props.loadMore();
+                // }}
+                // refreshing={this.props.refreshing}
+                // onRefresh={()=>{ 
+                //     // this.props.refetch();
+                // }}
+            />
+        }
+        
     </Screen>
 )
 
@@ -97,11 +114,15 @@ class ChatItem extends React.PureComponent {
                     ]
                 })
             }}>
-                <View styleName="horizontal v-center h-center" style={{backgroundColor:'#ccc' , width: 75 , height: '100%'}}>
+                <View styleName="horizontal v-center h-center" style={{backgroundColor: redColor , width: 75 , height: '100%'}}>
                     <Text style={{color: '#fff'}}>Delete</Text>
                 </View>
             </TouchableOpacity>
         ];
+        if(!opponent) {
+            // console.log(this.props.channelItem.members)
+            return null
+        }
         return (
             <Query query={gql(getUser)} variables={{id: opponent.userId}}>
                 {

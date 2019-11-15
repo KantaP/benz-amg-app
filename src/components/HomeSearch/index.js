@@ -12,7 +12,7 @@ import { FontAwesomeIcon }  from '../Icon';
 import { navigatorBarStyle ,  navTitle} from '../styles';
 import { FlatList , ActivityIndicator } from 'react-native';
 import PreloadPostCard from '../PreloadPostCard';
-
+import { PostPlaceHolder } from '../PostPlaceHolder';
 
 const HomeSearchScreen = ({navigation , state , onStateChange , onSearch , onLoadMore}) => (
     <Screen style={{backgroundColor:'#fff'}}>
@@ -50,7 +50,9 @@ const HomeSearchScreen = ({navigation , state , onStateChange , onSearch , onLoa
             state.loading &&
             (
                 <View styleName="horizontal h-center v-center" style={{padding: 10}}>
-                    <ActivityIndicator />
+                    <View style={{flex: 0.9}}>
+                        <PostPlaceHolder />
+                    </View>
                 </View>
             )
         }

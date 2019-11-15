@@ -20,9 +20,9 @@ const ChatView = Platform.select({
 
 const ConnectScreen = ({navigation , state , onSend , userProfile , onPickImage}) => (
     <ChatView
-    style={{ flex: 1, backgroundColor: 'white' }}
+    style={{ flex: 1 , backgroundColor: 'white' }}
     behavior={"padding"}
-    keyboardVerticalOffset={0}>
+    keyboardVerticalOffset={1}>
         <Spinner 
             visible={state.loading}
         />
@@ -35,7 +35,8 @@ const ConnectScreen = ({navigation , state , onSend , userProfile , onPickImage}
                         if(onCallback) {
                             onCallback();
                         }
-                        navigation.goBack();
+                        console.log(navigation)
+                        navigation.popToTop();
                     }}>
                         <FontAwesomeIcon  name="angle-left" style={{color:'#fff'}} />
                     </Button>
@@ -52,7 +53,7 @@ const ConnectScreen = ({navigation , state , onSend , userProfile , onPickImage}
                 messages={state.messages}
                 onSend={onSend}
                 user={{
-                _id: userProfile.id
+                    _id: userProfile.id
                 }}
                 renderActions={()=>(
                     <Button style={{alignSelf: 'center'}} onPress={()=>{

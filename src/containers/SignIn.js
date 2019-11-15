@@ -15,7 +15,8 @@ class SignInContainer extends React.Component {
         username: '',
         password: '',
         user: null,
-        showSpinner: false
+        showSpinner: false,
+        submit:false
     }
 
     
@@ -25,6 +26,12 @@ class SignInContainer extends React.Component {
     }
 
     signIn = async () => {
+        // await this.setState({submit: true});
+        if(!this.state.username || !this.state.password) {
+            toastRefService.get().show('Username or password incorrect.');
+            return;
+        }
+
         await this.setState({showSpinner : true});
         const { username, password } = this.state
         // console.log('user data ' , username , password);
@@ -34,7 +41,7 @@ class SignInContainer extends React.Component {
                 // console.log('user successfully signed in!', user)
                 const userProfile = await API.graphql(graphqlOperation(getUser , {id: user.attributes.sub}));
                 if(!userProfile.data.getUser.active) {
-                    toastRefService.get().show('Username or password is incorrect');
+                    toastRefService.get().show('Your username has not been activated');
                     this.setState({ showSpinner: false });
                     return false;
                 }
@@ -57,6 +64,7 @@ class SignInContainer extends React.Component {
          
         return (
             <SignInComponent
+                state={this.state}
                 screenProps={this.props.screenProps}
                 onShowSpinner={this.onShowSpinner}
                 onSignIn={this.signIn}

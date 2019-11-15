@@ -3,12 +3,12 @@ import {
     Screen ,
     NavigationBar ,
     View , 
-    Button ,
+    Button as BT ,
     Title ,
     Image ,
     Text,
     Caption,
-    TouchableOpacity
+    TouchableOpacity as TouchEx
 } from '@shoutem/ui';
 import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
@@ -18,7 +18,10 @@ import { navigatorBarStyle , navTitle } from '../styles';
 import PreloadPostCard from '../PreloadPostCard';
 import gql from 'graphql-tag';
 import RBSheet from "react-native-raw-bottom-sheet";
+import WithPreventDoubleClick from '../WithPreventDoubleClick';
 
+const Button = WithPreventDoubleClick(BT);
+const TouchableOpacity = WithPreventDoubleClick(TouchEx);
 
 const styles = {
     actionButton: {
@@ -46,7 +49,7 @@ const UserDetailScreen = (
         <NavigationBar
             leftComponent={
                 <Button styleName="clear" onPress={()=>{
-                    navigation.goBack();
+                    navigation.popToTop();
                 }}>
                     <FontAwesomeIcon  name="angle-left" style={{fontSize: 24 ,color:'#fff'}} />
                 </Button>

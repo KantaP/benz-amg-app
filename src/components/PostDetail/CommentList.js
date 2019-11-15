@@ -9,6 +9,9 @@ import CommentItem from './CommentItem';
 import { FlatList } from 'react-native';
 import _ from 'lodash';
 import { getUnique } from '../../containers/utils';
+
+let loadMore = false;
+
 const CommentList = ({postId}) => (
     <Query 
         query={gql(listComments)} 
@@ -24,25 +27,30 @@ const CommentList = ({postId}) => (
                         data={data}
                         loadMore={()=>{
                             // console.log('nextToken' , data.listPosts.nextToken);
-                            fetchMore({
-                                variables: {
-                                    nextToken: data.listComments.nextToken
-                                },
-                                updateQuery: (prev, { fetchMoreResult }) => {
-                                    if (!fetchMoreResult) return prev;
-                                    let concatArray = [...prev.listComments.items , ...fetchMoreResult.listComments.items];
-                                    let uniqueValue = getUnique(concatArray , 'id');
-                                    let newItems = Object.assign({}, prev, {
-                                        listComments: Object.assign({} , prev.listComments , {
-                                            items: [...uniqueValue] ,
-                                            nextToken : fetchMoreResult.listComments.nextToken
-                                        }),
-                                        
-                                    });
-                                    // console.log(newItems.listPosts.items.map((item)=>item.id));
-                                    return newItems;
-                                }
-                            })
+                            if(data.listComments.nextToken && !loadMore) {
+                                loadMore = true;
+                                fetchMore({
+                                    variables: {
+                                        nextToken: data.listComments.nextToken
+                                    },
+                                    updateQuery: (prev, { fetchMoreResult }) => {
+                                        if (!fetchMoreResult) return prev;
+                                        let concatArray = [...prev.listComments.items , ...fetchMoreResult.listComments.items];
+                                        let uniqueValue = getUnique(concatArray , 'id');
+                                        let newItems = Object.assign({}, prev, {
+                                            listComments: Object.assign({} , prev.listComments , {
+                                                items: [...uniqueValue] ,
+                                                nextToken : fetchMoreResult.listComments.nextToken
+                                            }),
+                                            
+                                        });
+                                        loadMore = false;
+                                        // console.log(newItems.listPosts.items.map((item)=>item.id));
+                                        return newItems;
+                                    }
+                                })
+                            }
+                            
                         }}
                         onCreateComment={()=>
                             subscribeToMore({

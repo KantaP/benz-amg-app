@@ -60,7 +60,7 @@ class SectionHeader extends React.PureComponent {
   
   class SectionItem extends React.PureComponent {
     componentDidMount() {
-        // console.log('SectionItem' , this.props);
+        console.log('SectionItem' , this.props);
     }
     render() {
       return (
@@ -142,6 +142,7 @@ class DirectoryListView extends React.Component  {
         // console.log(this.props.listUsers);
         // console.log(this.state.listUsers.data);
         let mixedBlockUser = [...this.props.listUserBlocks, ...this.props.listUserWhoBlockCurrentUser];
+        console.log(mixedBlockUser)
         let hideUsers = mixedBlockUser.map((item)=>item.userId);
         this.setState({
             listUsers: {
@@ -167,7 +168,7 @@ class DirectoryListView extends React.Component  {
                 listUsers = listUsers
                             .filter((user)=>!_.isNull(user.firstName) && !_.isNull(user.lastName) && user.id.toLowerCase() !== 'admin')
                             .filter((item)=>{
-                                return item.firstName.toLowerCase() === text.toLowerCase()
+                                return item.firstName.toLowerCase().includes(text.toLowerCase())
                             }).value();
                 this.setState({
                     listUsers: {
@@ -204,7 +205,7 @@ class DirectoryListView extends React.Component  {
 
     render() {
         return (
-            <ScrollView style={{marginBottom: 10}}>
+            <ScrollView style={{marginBottom: 10 , flex: 1}}>
                  <View styleName="horizontal h-center" style={{padding: 5 , marginBottom : 20}}>
                     <View style={{flex: 0.9 , borderBottomWidth: 0.5 , borderBottomColor: '#ccc'}}>
                         <TextInput 
@@ -217,12 +218,13 @@ class DirectoryListView extends React.Component  {
                     data={this.state.listUsers.data}
                     cell={Cell}
                     cellHeight={100}
-                    // sectionListItem={SectionItem}
+                    sectionListItem={SectionItem}
                     sectionHeader={SectionHeader}
                     headerHeight={22.5}
                     onCellSelect={(user)=>{
                         if(this.props.onCellSelect) this.props.onCellSelect(user);
                     }}
+                    hideSectionList={true}
                 />
             </ScrollView>
         )

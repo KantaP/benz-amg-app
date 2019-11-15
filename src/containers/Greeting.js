@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { setUserProfile } from '../actions/user';
 import { greetingPost } from '../actions/firstTime';
-import { createPost } from '../graphql/mutations';
+import { createPost , updateUser } from '../graphql/mutations';
 import { graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
 import moment from 'moment';
@@ -31,12 +32,25 @@ class GreetingContainer extends React.Component {
             tags: [] ,
             location: place ,
             postPostOfUserId: this.props.user.userProfile.id ,
-            type: 'Post' ,
+            type: 'post' ,
             radeemQuota: 0,
             createdAt,
+            pin:'off'
         };
         // this.props.requestStarted();
         this.props.onAddPost(postDetails);
+        let userBody = {
+            id: this.props.user.userProfile.id ,
+            firstLogin: true
+        }
+        this.props.updateUser(userBody)
+        .then((userProfile)=>{
+            this.props.setUserProfile({
+                ...this.props.user.userProfile ,
+                firstLogin: true
+            })
+        });
+        
         this.props.greetingPost();
         if(this.props.callback) {
             this.props.callback();
@@ -57,7 +71,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    greetingPost: () => dispatch(greetingPost())
+    greetingPost: () => dispatch(greetingPost()),
+    setUserProfile: (profile) => dispatch(setUserProfile(profile))
 })
 
 const withConnect = connect(mapStateToProps , mapDispatchToProps)(GreetingContainer);
@@ -82,4 +97,16 @@ const withCreatePost = graphql(gql(createPost) , {
     })
 })(withConnect);
 
-export default withCreatePost;
+const withUpdateUser = graphql(gql(updateUser) , {
+    props: props => ({
+        updateUser: updateItem => {
+            // console.log('upadte item' , updateItem);
+            return props.mutate({
+                variables: { input : updateItem }
+            })
+            
+        }
+    })
+})(withCreatePost)
+
+export default withUpdateUser;

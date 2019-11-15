@@ -5,6 +5,7 @@ class SendBirdService {
     constructor() {
         this.appId = 'ACAF974F-C0BD-49CD-B782-D7A95CF2612F'
         this.appToken = 'c770d11cb182de628db4a89b6be2d422dcfe112b';
+        this.defaultProfileUrl = 'https://resources-static.s3-ap-southeast-1.amazonaws.com/images/user-blank.jpg';
         this.sb =  new SendBird({appId: this.appId});
     }
 
@@ -59,7 +60,10 @@ class SendBirdService {
         });
     }
 
-    updateProfile = (user_id, {nickname , profile_url}) => {
+    updateProfile = (user_id, {nickname , profile_url = this.defaultProfileUrl}) => {
+        if(profile_url === null) {
+            profile_url = this.defaultProfileUrl;
+        }
         return fetch(`https://api-${this.appId}.sendbird.com/v3/users/${user_id}` , {
             headers: {
                 'Content-Type': 'application/json, charset=utf8',

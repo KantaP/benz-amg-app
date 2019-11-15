@@ -4,17 +4,21 @@ import {
     View ,
     NavigationBar ,
     Title ,
-    Button ,
+    Button as BT ,
     DropDownMenu ,
     Text ,
     Switch,
-    TouchableOpacity,
+    TouchableOpacity as TouchEX,
     Caption
 } from '@shoutem/ui';
 
 import { ScrollView } from 'react-native';
 import { navigatorBarStyle , switchStyle  , navTitle} from '../styles';
 import { FontAwesomeIcon  } from '../Icon';
+import WithPreventDoubleClick from '../WithPreventDoubleClick';
+
+const Button = WithPreventDoubleClick(BT);
+const TouchableOpacity = WithPreventDoubleClick(TouchEX);
 
 const styles = {
     blockView: {
@@ -169,7 +173,7 @@ const SettingScreen = ({navigation , state , onStateChange , onSignOut}) => (
                 styleName="horizontal v-center" 
                 style={styles.blockView}
             >
-                <Caption>Version 0.0.1</Caption>
+                <Caption>Version 0.0.4</Caption>
             </View>
         </ScrollView>
     </Screen>

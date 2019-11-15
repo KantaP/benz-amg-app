@@ -11,6 +11,9 @@ import { FlatList } from 'react-native'
 import { SimpleLineIcon } from '../Icon';
 import _ from 'lodash';
 import { withNavigationFocus } from 'react-navigation';
+import { PostPlaceHolder } from '../PostPlaceHolder';
+
+let loadMore = false;
 
 const PriviledgeView = ({userId , isFocused}) => (
     (isFocused)
@@ -19,34 +22,48 @@ const PriviledgeView = ({userId , isFocused}) => (
             variables={{filter: {userBookmarkCode: {eq: userId}}}} 
             query={gql(listPostBookmarks)}
             fetchPolicy="network-only"
+            errorPolicy="ignore"
         >
             {
                 ({subscribeToMore , data , loading , fetchMore}) => {
                     
-                    if(loading) return null 
+                    if(loading) return <View style={{padding: 10}}><PostPlaceHolder /></View>;
                     // console.log('bookmark' , data , {filter: {userBookmarkCode: {eq: userId}} , limit: 5})
                     return (
                         <PriviledgeList 
                             data={data}
                             loadMore={()=>{
-                                fetchMore({
-                                    variables: {
-                                        nextToken: data.listPostBookmarks.nextToken
-                                    },
-                                    updateQuery: (prev, { fetchMoreResult }) => {
-                                        // console.log('fetch more' , fetchMoreResult)
-                                        // console.log(result.data.listPosts.nextToken)
-                                        if (!fetchMoreResult) return prev;
-                                        let concatArray = [...prev.listPostBookmarks.items , ...fetchMoreResult.listPostBookmarks.items];
-                                        let uniqueValue = getUnique(concatArray , 'id');
-                                        return Object.assign({}, prev, {
-                                            listPostBookmarks: Object.assign({} , prev.listPostBookmarks , {
-                                                items: [...uniqueValue],
-                                                nextToken: fetchMoreResult.listPostBookmarks.nextToken
-                                            })
-                                        });
-                                    }
-                                })
+                                if(data.listPostBookmarks.nextToken && !loadMore) {
+                                    loadMore = true;
+                                    fetchMore({
+                                        variables: {
+                                            nextToken: data.listPostBookmarks.nextToken
+                                        },
+                                        updateQuery: (prev, { fetchMoreResult }) => {
+                                            // console.log('fetch more' , fetchMoreResult)
+                                            // console.log(result.data.listPosts.nextToken)
+                                            if (!fetchMoreResult) return prev;
+                                            let concatArray = [...prev.listPostBookmarks.items , ...fetchMoreResult.listPostBookmarks.items];
+                                            let uniqueValue = getUnique(concatArray , 'id');
+                                            loadMore = false;
+                                            return Object.assign({}, prev, {
+                                                listPostBookmarks: Object.assign({} , prev.listPostBookmarks , {
+                                                    items: [...uniqueValue],
+                                                    nextToken: fetchMoreResult.listPostBookmarks.nextToken
+                                                })
+                                            });
+                                        }
+                                    })
+                                }
+                                
+                            }}
+                            footerComponent={()=>{
+                                if(loadMore) {
+                                    return (
+                                        <PostPlaceHolder />
+                                    )
+                                }
+                                return null;
                             }}
                         />
                     )
@@ -72,7 +89,9 @@ class PriviledgeList extends React.Component {
     }
 
     render() {
-        let posts = _(this.props.data.listPostBookmarks.items).filter((item)=>item.postBookmark.type === 'privilege').value()
+        let posts = _(this.props.data.listPostBookmarks.items)
+                    .filter((item)=>item)   
+                    .filter((item)=>item.postBookmark.type.toLowerCase() === 'privilege').value()
         if(posts.length === 0) {
             return (
                 <View styleName="vertical v-center h-center" style={{flex: 1}}>
@@ -94,7 +113,7 @@ class PriviledgeList extends React.Component {
                 renderItem={({item})=>{
                     return <PreloadPostCard id={item.postBookmark.id} showActivityTab showAction />
                 }}
-
+                ListFooterComponent={this.props.footerComponent}
             />
         )
     }

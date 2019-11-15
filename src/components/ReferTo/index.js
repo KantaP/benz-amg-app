@@ -21,7 +21,7 @@ const ReferToScreen = ({onAddRefer , userProfile , navigation , state , onSelect
             hasHistory={true}
             leftComponent={
                 <Button styleName="clear" onPress={()=>{
-                    navigation.goBack();
+                    navigation.popToTop();
                 }}>
                     <FontAwesomeIcon  name="angle-left" style={{color:'#fff'}} />
                 </Button>

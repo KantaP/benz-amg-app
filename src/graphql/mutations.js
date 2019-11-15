@@ -27,6 +27,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     expireAt
     level
     createdAt
+    firstLogin
     images {
       items {
         id
@@ -208,6 +209,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     expireAt
     level
     createdAt
+    firstLogin
     images {
       items {
         id
@@ -5863,7 +5865,76 @@ export const createFeedback = `mutation CreateFeedback($input: CreateFeedbackInp
     topic
     message
     createdAtUnix
-    userId
+    user {
+      id
+      staffID
+      username
+      birthDate
+      firstName
+      lastName
+      mobilePhone
+      email
+      amgId
+      amgModel
+      amgShowroom
+      nickName
+      citizenId
+      image
+      address
+      subDistrict
+      district
+      province
+      active
+      pushToken
+      type
+      expireAt
+      level
+      createdAt
+      images {
+        nextToken
+      }
+      companies {
+        nextToken
+      }
+      postsOfUser {
+        nextToken
+      }
+      userComments {
+        nextToken
+      }
+      userReports {
+        nextToken
+      }
+      userBookmarks {
+        nextToken
+      }
+      referrers {
+        nextToken
+      }
+      receivers {
+        nextToken
+      }
+      userRadeem {
+        nextToken
+      }
+      userEvents {
+        nextToken
+      }
+      reportComments {
+        nextToken
+      }
+      userBlocks {
+        nextToken
+      }
+      events {
+        nextToken
+      }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
+    }
     createdAt
   }
 }

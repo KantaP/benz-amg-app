@@ -7,6 +7,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { API , graphqlOperation } from 'aws-amplify';
 import { itemsByPostType , itemsByPin } from '../graphql/queries';
 import moment from 'moment';
+import { Updates } from 'expo';
 
 class HomeContainer extends React.Component {
     static navigationOptions = { 
@@ -21,16 +22,30 @@ class HomeContainer extends React.Component {
         refreshing: false,
         showGreeting: false,
         showError: false ,
-        pinPost: []
+        pinPost: [] ,
+        showUpdate: false
     }
 
     componentDidMount() {
         // console.log(this.props.firstTime.greetingPost);
         this.setState({readyToQuery: true});
-        if(!this.props.firstTime.greetingPost) {
+        if(!this.props.userProfile.firstLogin || this.props.userProfile.firstLogin === null) {
             this.setState({showGreeting: true})
         }
         this.fetchPost();
+        // setInterval(()=>{
+        //     Updates.checkForUpdateAsync().then(async update => {
+        //         if (update.isAvailable) {
+        //             await Updates.fetchUpdateAsync();
+        //             // ... notify user of update ...
+        //             Updates.reloadFromCache();
+        //         }
+        //     });
+        // }, 300000)
+    }
+
+    doUpdate = () => {
+        Updates.reload();
     }
 
     fetchPost = async() => {
@@ -53,7 +68,8 @@ class HomeContainer extends React.Component {
                 expireAt: {
                     ge: moment().format()
                 },
-                limit: 5
+                limit: 5,
+                sortDirection: 'DESC'
             }));
             // let userPost = await API.graphql(graphqlOperation(itemsByPostType, {
             //     type: 'Post',
@@ -71,9 +87,9 @@ class HomeContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.firstTime.greetingPost !== nextProps.firstTime.greetingPost) {
-            this.setState({showGreeting: !this.state.showGreeting});
-        }
+        // if(this.props.firstTime.greetingPost !== nextProps.firstTime.greetingPost) {
+        //     this.setState({showGreeting: !this.state.showGreeting});
+        // }
     }
 
     render() {
@@ -81,7 +97,14 @@ class HomeContainer extends React.Component {
         // console.log(this.state)
         // console.log('home render')
         return(
-            <HomeScreen {...this.props} state={this.state} onStateChange={onStateChange.bind(this)} />
+            <HomeScreen 
+            {...this.props} 
+            state={this.state} 
+            onStateChange={onStateChange.bind(this)} 
+            refetchPost={this.fetchPost} 
+            doUpdate={this.doUpdate}
+            userProfile={this.props.userProfile}
+            />
         ) 
     }
 }
@@ -89,6 +112,7 @@ class HomeContainer extends React.Component {
 const mapStateToProps = (state) => ({
     firstTime: state.firstTime,
     notification: state.notification,
+    userProfile: state.user.userProfile ,
     listUserBlocks: state.user.listUserBlocks,
     listUserWhoBlockCurrentUser: state.user.listUserWhoBlockCurrentUser
 })

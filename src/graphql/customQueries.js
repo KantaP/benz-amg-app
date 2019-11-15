@@ -311,8 +311,7 @@ export const getPost = `query GetPost($id: ID! , $filterPostRadeem: ModelPostRad
     }
   }
   `;
-
-  export const getEvent = `query GetEvent($id: ID! , $filterUser: ModelUserJoinedEventFilterInput) {
+  export const getEvent = `query GetEvent($id: ID!, $filterUser: ModelUserJoinedEventFilterInput) {
     getEvent(id: $id) {
       id
       title
@@ -335,6 +334,7 @@ export const getPost = `query GetPost($id: ID! , $filterPostRadeem: ModelPostRad
           eventId
           userId
           eventStartTimeUnix
+          eventEndTime
           createdAt
         }
         nextToken
@@ -409,6 +409,8 @@ export const getPost = `query GetPost($id: ID! , $filterPostRadeem: ModelPostRad
         events {
           nextToken
         }
+        memberShipPrice
+        firstLogin
       }
     }
   }

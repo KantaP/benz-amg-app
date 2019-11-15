@@ -20,7 +20,7 @@ class CreatePostContainer extends React.Component {
     state = {
         content: '' ,
         commentFeature: true ,
-        place: {
+        location: {
             placeName: '' ,
             placeLatLng: ''
         } ,
@@ -29,7 +29,8 @@ class CreatePostContainer extends React.Component {
         formChange: false ,
         identity: {},
         edit: false,
-        id: ""
+        id: "",
+        loading: false
     }
     willBlurSubscription = null;
     componentDidMount() {
@@ -47,7 +48,7 @@ class CreatePostContainer extends React.Component {
                     this.setState({
                         content: '' ,
                         commentFeature: true ,
-                        place: {
+                        location: {
                             placeName: '',
                             placeLatLng: ''
                         } ,
@@ -151,22 +152,24 @@ class CreatePostContainer extends React.Component {
             level: "public",
             contentType: type
         };
-        Storage.put(name , blob , options)
-        .then (result => {
-            // console.log(result)
+        try {
+            let result = await Storage.put(name , blob , options);
             console.log('add image');
             this.props.onAddPostImage({
                 postImagePostImageId: id,
                 uri: `https://${config.aws_user_files_s3_bucket}.s3-${config.aws_user_files_s3_bucket_region}.amazonaws.com/public/${result.key}`
             })
-        })
-        .catch(err => console.log(err));
+            return true;
+        } catch(error) {
+            return false;
+        }
     }
 
-    uploadImage(id) {
-        this.state.photos.forEach((photo)=> {
-            this.blobUploadImage(id , photo);
-        })
+    async uploadImage(id) {
+        for(let photo of this.state.photos) {
+            await this.blobUploadImage(id , photo);
+        }
+        return true;
     }
 
     render() {
@@ -180,15 +183,16 @@ class CreatePostContainer extends React.Component {
                 onPickImage={this.pickImage}
                 onRemoveImage={this.removeImage}
                 loading={this.props.request.loading}
-                onSubmit={()=>{
+                onSubmit={async()=>{
                     // console.log(this.state.identity)
+                    await this.setState({loading: true});
                     const id = uuidV4();
                     const createdAt = moment().format();
-                    let place = (!this.state.place.placeName)
+                    let place = (!this.state.location.placeName)
                                 ? {
                                     placeName:  'null' ,
                                     placeLatLng: 'null'
-                                } : this.state.place
+                                } : this.state.location
                     const postDetails = {
                         id ,
                         content: this.state.content , 
@@ -196,16 +200,17 @@ class CreatePostContainer extends React.Component {
                         tags: this.state.tags ,
                         location: place ,
                         postPostOfUserId: this.props.user.userProfile.id ,
-                        type: 'Post' ,
+                        type: 'post' ,
                         radeemQuota: 0,
                         createdAt,
+                        pin:'off'
                     };
-                    console.log(postDetails);
+                    // console.log(postDetails);
                     // this.props.requestStarted();
                     this.props.onAddPost(postDetails);
                     // createPost({variables: {input: postDetails}});
                     if(this.state.photos.length) {
-                        this.uploadImage(id);
+                        await this.uploadImage(id);
                     }
                     this.setState({
                         content: '' ,
@@ -218,16 +223,22 @@ class CreatePostContainer extends React.Component {
                         photos: [] ,
                         formChange: false
                     }); 
-                    this.props.navigation.navigate('Home');
+                    setTimeout( ()=> {
+                        this.setState({loading: false} , () => {
+                            this.props.navigation.navigate('Home') 
+                        });
+                        
+                    }, 500 );
                 }}
-                onUpdate={()=>{
+                onUpdate={async()=>{
+                    await this.setState({loading: true});
                     // console.log(this.state.identity)
                     const id = this.state.id
-                    let place = (!this.state.place.placeName)
+                    let place = (!this.state.location.placeName)
                                 ? {
                                     placeName:  'null' ,
                                     placeLatLng: 'null'
-                                } : this.state.place
+                                } : this.state.location
                     const postDetails = {
                         id ,
                         content: this.state.content , 
@@ -238,7 +249,7 @@ class CreatePostContainer extends React.Component {
                         type: 'post' ,
                         radeemQuota: 0,
                     };
-                    console.log('edit post detail' , postDetails);
+                    // console.log('edit post detail' , postDetails);
                     // this.props.requestStarted();
                     this.props.updatePost(postDetails);
                     this.setState({
@@ -252,7 +263,12 @@ class CreatePostContainer extends React.Component {
                         photos: [] ,
                         formChange: false
                     }); 
-                    this.props.navigation.navigate('Home');
+                    setTimeout( ()=> {
+                        this.setState({loading: false} , () => {
+                            this.props.navigation.navigate('Home') 
+                        });
+                        
+                    }, 500 );
                 }}
             />
            

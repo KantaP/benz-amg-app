@@ -46,9 +46,9 @@ class ContactContainer extends React.Component {
         try {
             let variables = {
                 input: {
-                    topic: this.state.feedbackMessage,
+                    topic: this.state.feedbackTopic,
                     message: this.state.feedbackMessage,
-                    userId: this.props.userProfile.id,
+                    feedbackUserId: this.props.userProfile.id,
                     createdAtUnix: moment().valueOf(),
                 }
             }
@@ -70,11 +70,11 @@ class ContactContainer extends React.Component {
         }
         if(type === 'address') {
             // go to address link
-            const lat = 13.7822301;
-            const lng = 100.5945208;
+            const lat = 13.7364787;
+            const lng = 100.6354895;
             const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
             const latLng = `${lat},${lng}`;
-            const label = 'Custom Label';
+            const label = 'Benz TTC Motor';
             const url = Platform.select({
                 ios: `${scheme}${label}@${latLng}`,
                 android: `${scheme}${latLng}(${label})`

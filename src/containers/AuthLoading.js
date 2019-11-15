@@ -37,12 +37,19 @@ class AuthLoadingContainer extends React.Component {
 
             // console.log(userData);
             let myProfile = await this.userProfile(userData.username);
+            if(!myProfile.data.getUser.active) {
+                toastRefService.get().show('Your username has not been activated');
+                this.props.navigation.navigate('Auth');
+                // this.setState({ showSpinner: false });
+                return false;
+            }
+            // console.log(myProfile.data.getUser);
             this.props.setUserProfile(myProfile.data.getUser);
             
             let listUsersWithoutMyId = await this.listUserWithOutMyId(myProfile.data.getUser.id);
             let listUserBlocks = await this.listUserBlocks(myProfile.data.getUser.id);
             let listUserWhoBlockCurrentUser = await this.listUserWhoBlockCurrentUser(myProfile.data.getUser.id);
-            // // console.log(listUsersWithoutMyId);
+            // console.log(listUsersWithoutMyId);
 
             this.props.setListUsers(listUsersWithoutMyId);
             this.props.setListUserBlocks(listUserBlocks);
@@ -50,8 +57,15 @@ class AuthLoadingContainer extends React.Component {
             // console.log(listUserWhoBlockCurrentUser);
             
             this._notificationSubscription = Notifications.addListener(this._handleNotification);
-
+            console.log(myProfile.data.getUser.image);
             sendBirdService.connect(myProfile.data.getUser.id);
+            sendBirdService.updateProfile(myProfile.data.getUser.id , {
+                nickname: myProfile.data.getUser.firstName + ' ' + myProfile.data.getUser.lastName,
+                profile_url: myProfile.data.getUser.image
+            })
+            .then((json)=>{
+                console.log('update sendbird profile');
+            })
     
             this.registerPushNotifications()
             .then((token)=>{
@@ -225,7 +239,7 @@ class AuthLoadingContainer extends React.Component {
                     id: {
                         ne: myId
                     },
-                    type: {
+                    level: {
                         eq: 'user'
                     }
                 }

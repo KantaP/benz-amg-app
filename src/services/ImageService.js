@@ -1,6 +1,7 @@
 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { Storage } from 'aws-amplify';
 class ImageService {
     onImagePicker = async(callback) => {
@@ -15,10 +16,15 @@ class ImageService {
             aspect: [4, 3],
         });
       
-        console.log(result);
+        // console.log(result);
       
         if (!result.cancelled) {
-            callback(result);
+            const manipResult = await ImageManipulator.manipulateAsync(
+                result.uri,
+                [{resize: {width: result.width / 3}}],
+                { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
+            );
+            callback(manipResult);
         }
     }
 

@@ -12,6 +12,9 @@ import _ from 'lodash';
 import { SimpleLineIcon } from '../Icon';
 import moment from 'moment-timezone';
 import { withNavigationFocus } from 'react-navigation';
+import { PostPlaceHolder } from '../PostPlaceHolder';
+
+let loadMore = false;
 
 const ReferView = ({userId , isFocused}) => (
     (isFocused)
@@ -20,35 +23,49 @@ const ReferView = ({userId , isFocused}) => (
             variables={{filter: {receiver: {eq: userId}} , limit: 5}} 
             query={gql(listPostReferSeconds)}
             fetchPolicy="network-only"
+            errorPolicy="ignore"
         >
             {
                 ({subscribeToMore , data , loading , error , fetchMore}) => {
                     
-                    if(loading) return null 
+                    if(loading) return <View style={{padding: 10}}><PostPlaceHolder /></View>; 
                     if(error) return (<Text>{error.message}</Text>)
                     // console.log('bookmark' , data , {filter: {userBookmarkCode: {eq: userId}} , limit: 5})
                     return (
                         <ReferList 
                             data={data.listPostReferSeconds.items}
                             loadMore={()=>{
-                                fetchMore({
-                                    variables: {
-                                        nextToken: data.listPostReferSeconds.nextToken
-                                    },
-                                    updateQuery: (prev, { fetchMoreResult }) => {
-                                        // console.log('fetch more' , fetchMoreResult)
-                                        // console.log(result.data.listPosts.nextToken)
-                                        if (!fetchMoreResult) return prev;
-                                        let concatArray = [...prev.listPostReferSeconds.items , ...fetchMoreResult.listPostReferSeconds.items];
-                                        let uniqueValue = getUnique(concatArray , 'id');
-                                        return Object.assign({}, prev, {
-                                            listPostReferSeconds: Object.assign({} , prev.listPostReferSeconds , {
-                                                items: [...uniqueValue],
-                                                nextToken: fetchMoreResult.listPostReferSeconds.nextToken
-                                            })
-                                        });
-                                    }
-                                })
+                                if(data.listPostReferSeconds.nextToken && !loadMore) {
+                                    loadMore = true;
+                                    fetchMore({
+                                        variables: {
+                                            nextToken: data.listPostReferSeconds.nextToken
+                                        },
+                                        updateQuery: (prev, { fetchMoreResult }) => {
+                                            // console.log('fetch more' , fetchMoreResult)
+                                            // console.log(result.data.listPosts.nextToken)
+                                            if (!fetchMoreResult) return prev;
+                                            let concatArray = [...prev.listPostReferSeconds.items , ...fetchMoreResult.listPostReferSeconds.items];
+                                            let uniqueValue = getUnique(concatArray , 'id');
+                                            loadMore = false;
+                                            return Object.assign({}, prev, {
+                                                listPostReferSeconds: Object.assign({} , prev.listPostReferSeconds , {
+                                                    items: [...uniqueValue],
+                                                    nextToken: fetchMoreResult.listPostReferSeconds.nextToken
+                                                })
+                                            });
+                                        }
+                                    })
+                                }
+                                
+                            }}
+                            footerComponent={()=>{
+                                if(loadMore) {
+                                    return (
+                                        <PostPlaceHolder />
+                                    )
+                                }
+                                return null;
                             }}
                         />
                     )
@@ -80,10 +97,15 @@ class ReferList extends React.Component {
             return (
                 <View styleName="vertical v-center h-center" style={{flex: 1}}>
                     <Title style={{color:'#ccc' , fontWeight:'bold'}}>No Refer</Title>
-                    <Caption style={{color:'#ccc'}}>This page will contain information when you received refer from other users</Caption>
+                    <Caption style={{color:'#ccc'}}>This page will contain information when</Caption>
+                    <Caption style={{color:'#ccc'}}>you received refer from other users</Caption>
                 </View>
             )
         }
+        let posts = _(this.props.data)
+                    .filter((item)=>item)
+                    .value();
+        // console.log(posts); 
         return (
             <FlatList 
                 initialNumToRender={8}
@@ -93,22 +115,22 @@ class ReferList extends React.Component {
                     this.props.loadMore();
                 }}
                 keyExtractor={(item,index)=>item.id}
-                data={this.props.data} 
+                data={[].concat(posts)} 
                 renderItem={({item})=>{
                     return <ReferItem post={item.post} referrer={item.referrerPostUser} createdAt={item.createdAt} />
                 }}
-
+                ListFooterComponent={this.props.footerComponent}
             />
         )
     }
 }
 
 class ReferItem extends React.PureComponent {
-    shouldComponentUpdate() {
-        return false;
-    }
-
+    
     render() {
+        if(!this.props.referrer) {
+            return null;
+        }
         return (<View styleName="vertical">
             <View styleName="horizontal v-center" style={{padding: 10 , borderBottomColor:'#eee' , borderBottomWidth: 1}}>
                 <Image 

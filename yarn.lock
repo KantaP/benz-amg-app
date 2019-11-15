@@ -1101,10 +1101,10 @@
     prop-types "^15.5.10"
     tinycolor2 "^1.3.0"
 
-"@shoutem/ui@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@shoutem/ui/-/ui-1.0.1.tgz#fcd8faece10614db4a28b0eef7a5dce5e84da870"
-  integrity sha512-B0vy5X/AMGZSi/kZ9IhN9ZuX+LFlkxwJmdfK6gy6vH+sRPTVFH3WP4rEvubDGB8AEPhQ1B2r2V9aul2TC8flQQ==
+"@shoutem/ui@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@shoutem/ui/-/ui-1.0.3.tgz#f3c4525df00d679e5e9bbd87e33bd08ccb500388"
+  integrity sha512-DeYUdfhT5UzlS9ToD9h2VgO0m0D/n5uPM1app09MptwCeVdkLY2n3SPWCuJWt3y5syLp1XTahrbqYY+3Rhc69A==
   dependencies:
     "@shoutem/animation" "~0.12.3"
     "@shoutem/theme" "~0.11.3"
@@ -1118,7 +1118,7 @@
     qs "~4.0.0"
     react-native-lightbox shoutem/react-native-lightbox#v0.7.2
     react-native-linear-gradient "~2.5.4"
-    react-native-navigation-experimental-compat shoutem/react-native-navigation-experimental-compat#fbce4b9e478f808634a98dac48901ec6ed4ee9fd
+    react-native-navigation-experimental-compat goshakkk/react-native-navigation-experimental-compat#fe6de3323fd13b1a93ed93d688b258fef1052408
     react-native-photo-view shoutem/react-native-photo-view#cfc3f50a2a3a83a3848a570ad86a1f732001ad57
     react-native-render-html "~4.1.2"
     react-native-transformable-image shoutem/react-native-transformable-image#v0.0.20
@@ -3038,6 +3038,11 @@ expo-font@~7.0.0:
   integrity sha512-OVlUydfexjq1u57Xlymcx5egfFF2WZ5MXkg3GGjHyiSMfp09inZ7OzAu+O/TXjxjlaq9d6vBXiwVxqQoUIlx1Q==
   dependencies:
     fontfaceobserver "^2.1.0"
+
+expo-image-manipulator@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-7.0.0.tgz#2306213b30e306e87ddb02f15e35c4f1f4d36a12"
+  integrity sha512-N6DV6QQ4fwppRgntXTk2zydyuSBkpkJCbU/VWohhhP26Pp2Z6ay0OfXz08OdQN2UEStAisx+W1St7cWqwq7tjA==
 
 expo-image-picker@~5.0.2:
   version "5.0.2"
@@ -5567,6 +5572,15 @@ react-native-animatable@^1.3.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-appearance@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.1.0.tgz#a195d9a71c03dc4de246b86a18e95c8ecd08d505"
+  integrity sha512-WitRX+1bYCwTOxh0dV+/3Pv/O0jzKl/Y+O4kMiPhiJFe/tibAE8l5wYw6l3X1gkPMn52khdxBDV0Ndkp3Pjvdw==
+  dependencies:
+    fbemitter "^2.1.1"
+    invariant "^2.2.4"
+    use-subscription "^1.0.0"
+
 react-native-branch@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
@@ -5693,9 +5707,9 @@ react-native-modal@^11.0.2:
     prop-types "^15.6.2"
     react-native-animatable "^1.3.1"
 
-react-native-navigation-experimental-compat@shoutem/react-native-navigation-experimental-compat#fbce4b9e478f808634a98dac48901ec6ed4ee9fd:
-  version "1.1.1"
-  resolved "https://codeload.github.com/shoutem/react-native-navigation-experimental-compat/tar.gz/fbce4b9e478f808634a98dac48901ec6ed4ee9fd"
+react-native-navigation-experimental-compat@goshakkk/react-native-navigation-experimental-compat#fe6de3323fd13b1a93ed93d688b258fef1052408:
+  version "1.1.0"
+  resolved "https://codeload.github.com/goshakkk/react-native-navigation-experimental-compat/tar.gz/fe6de3323fd13b1a93ed93d688b258fef1052408"
   dependencies:
     fbjs "~0.8.9"
 
@@ -5760,6 +5774,11 @@ react-native-scroller@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/react-native-scroller/-/react-native-scroller-0.0.6.tgz#dea8c89bd1ca2d2445fbb6b3a90960df6c1767ff"
   integrity sha1-3qjIm9HKLSRF+7azqQlg32wXZ/8=
+
+react-native-status-bar-height@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.4.0.tgz#de8cee4bb733a196167210d2d0bc1fa10acba3e3"
+  integrity sha512-pWvZFlyIHiuxLugLioq97vXiaGSovFXEyxt76wQtbq0gxv4dGXMPqYow46UmpwOgeJpBhqL1E0EKxnfJRrFz5w==
 
 react-native-svg-transformer@^0.13.0:
   version "0.13.0"
@@ -6265,6 +6284,11 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
+
+rn-placeholder@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rn-placeholder/-/rn-placeholder-3.0.0.tgz#d51063cfc20cf702547205b936d934e92c4941b0"
+  integrity sha512-ydlIDoth4uvj9PPEOZLZxgNtNJlmUR49IGFtRKM7FWcKuMG2hC89kIPa8xRCO5vfxSDPwMGTyshYGGsQXOJJNA==
 
 rsvp@^3.3.3:
   version "3.6.2"
@@ -7052,6 +7076,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-subscription@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.2.0.tgz#2a6789ef2cb9c5d78990a728a28630673e82f709"
+  integrity sha512-gbBH3zEoZycCJBisWzRkZ9IjwlWys2udleYkkNYTZYLhKRwLQbzh2ZbHXzKDvgFyim0WN/ROpp2Z1AF8wiT7zA==
 
 use@^3.1.0:
   version "3.1.1"

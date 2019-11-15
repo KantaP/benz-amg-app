@@ -2,6 +2,10 @@ import { Platform } from 'react-native';
 import { Appearance } from 'react-native-appearance';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 export const colorScheme = Appearance.getColorScheme();
+
+export const redColor = '#C43835';
+export const blackColor = '#191919';
+
 export const textStyle = {
     color: '#fff'
 }
@@ -12,13 +16,15 @@ export const buttonStyle = {
 }
 
 export const inputTextStyle = {
-    borderLeftColor: '#000',
-    borderRightColor: '#000',
-    borderTopColor: '#000',
-    borderBottomColor: '#fff',
+    // borderLeftColor: '#000',
+    // borderRightColor: '#000',
+    // borderTopColor: '#000',
     backgroundColor: 'transparent', 
     color: '#ffffff' ,
-    borderBottomWidth : 1 
+    borderWidth: 0, 
+    borderBottomWidth : 1 ,
+    borderBottomColor: '#fff',
+    placeholderTextColor: '#fff'
 }
  
 export const iconStyle = {
@@ -31,7 +37,10 @@ export const navigatorBarStyle = {
         backgroundColor: '#191919' ,
         paddingTop: (Platform.OS === 'ios') ? 30 : 30,
         // height: (Platform.OS === 'ios' ) ? 90 : 90,
-        height: getStatusBarHeight(true) + 65,
+        height: getStatusBarHeight() + 65,
+    },
+    centerComponent: {
+        flex: 3,
     },
 }
 

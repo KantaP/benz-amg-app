@@ -136,7 +136,14 @@ class ConnectContainer extends React.Component {
             }
 
             // console.log('previous messages' , _messages)
-
+            if(_messages.length === 0) {
+                _messages.push({
+                    _id: 1,
+                    text: 'Start your conversation',
+                    createdAt: new Date(),
+                    system: true,
+                })
+            }
             // var _newMessageList = _SELF.state.messages.concat(_messages.reverse());
             this.setState(previousState => {
                 previousState.messages = [..._messages.reverse()];

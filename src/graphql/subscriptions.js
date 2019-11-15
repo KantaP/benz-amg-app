@@ -1,8 +1,8 @@
-// eslint-disable
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = `subscription OnCreateUser {
-  onCreateUser {
+export const onCreateUser = `subscription OnCreateUser($username: String) {
+  onCreateUser(username: $username) {
     id
     staffID
     username
@@ -48,6 +48,7 @@ export const onCreateUser = `subscription OnCreateUser {
         image
         logo
         createdAt
+        owner
       }
       nextToken
     }
@@ -114,6 +115,7 @@ export const onCreateUser = `subscription OnCreateUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -123,6 +125,7 @@ export const onCreateUser = `subscription OnCreateUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -141,6 +144,7 @@ export const onCreateUser = `subscription OnCreateUser {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -179,11 +183,23 @@ export const onCreateUser = `subscription OnCreateUser {
       }
       nextToken
     }
+    feedbacks {
+      items {
+        id
+        topic
+        message
+        createdAtUnix
+        createdAt
+      }
+      nextToken
+    }
+    memberShipPrice
+    firstLogin
   }
 }
 `;
-export const onUpdateUser = `subscription OnUpdateUser {
-  onUpdateUser {
+export const onUpdateUser = `subscription OnUpdateUser($username: String) {
+  onUpdateUser(username: $username) {
     id
     staffID
     username
@@ -229,6 +245,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
         image
         logo
         createdAt
+        owner
       }
       nextToken
     }
@@ -295,6 +312,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -304,6 +322,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -322,6 +341,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -360,6 +380,18 @@ export const onUpdateUser = `subscription OnUpdateUser {
       }
       nextToken
     }
+    feedbacks {
+      items {
+        id
+        topic
+        message
+        createdAtUnix
+        createdAt
+      }
+      nextToken
+    }
+    memberShipPrice
+    firstLogin
   }
 }
 `;
@@ -410,6 +442,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         image
         logo
         createdAt
+        owner
       }
       nextToken
     }
@@ -476,6 +509,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -485,6 +519,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -503,6 +538,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -541,11 +577,23 @@ export const onDeleteUser = `subscription OnDeleteUser {
       }
       nextToken
     }
+    feedbacks {
+      items {
+        id
+        topic
+        message
+        createdAtUnix
+        createdAt
+      }
+      nextToken
+    }
+    memberShipPrice
+    firstLogin
   }
 }
 `;
-export const onCreateUserImages = `subscription OnCreateUserImages {
-  onCreateUserImages {
+export const onCreateUserImages = `subscription OnCreateUserImages($owner: String) {
+  onCreateUserImages(owner: $owner) {
     id
     uri
     owner
@@ -613,12 +661,17 @@ export const onCreateUserImages = `subscription OnCreateUserImages {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
 `;
-export const onUpdateUserImages = `subscription OnUpdateUserImages {
-  onUpdateUserImages {
+export const onUpdateUserImages = `subscription OnUpdateUserImages($owner: String) {
+  onUpdateUserImages(owner: $owner) {
     id
     uri
     owner
@@ -686,12 +739,17 @@ export const onUpdateUserImages = `subscription OnUpdateUserImages {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
 `;
-export const onDeleteUserImages = `subscription OnDeleteUserImages {
-  onDeleteUserImages {
+export const onDeleteUserImages = `subscription OnDeleteUserImages($owner: String) {
+  onDeleteUserImages(owner: $owner) {
     id
     uri
     owner
@@ -759,12 +817,17 @@ export const onDeleteUserImages = `subscription OnDeleteUserImages {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
 `;
-export const onCreateCompany = `subscription OnCreateCompany {
-  onCreateCompany {
+export const onCreateCompany = `subscription OnCreateCompany($owner: String) {
+  onCreateCompany(owner: $owner) {
     id
     user {
       id
@@ -830,6 +893,11 @@ export const onCreateCompany = `subscription OnCreateCompany {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     name
     description
@@ -850,11 +918,12 @@ export const onCreateCompany = `subscription OnCreateCompany {
       }
       nextToken
     }
+    owner
   }
 }
 `;
-export const onUpdateCompany = `subscription OnUpdateCompany {
-  onUpdateCompany {
+export const onUpdateCompany = `subscription OnUpdateCompany($owner: String) {
+  onUpdateCompany(owner: $owner) {
     id
     user {
       id
@@ -920,6 +989,11 @@ export const onUpdateCompany = `subscription OnUpdateCompany {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     name
     description
@@ -940,11 +1014,12 @@ export const onUpdateCompany = `subscription OnUpdateCompany {
       }
       nextToken
     }
+    owner
   }
 }
 `;
-export const onDeleteCompany = `subscription OnDeleteCompany {
-  onDeleteCompany {
+export const onDeleteCompany = `subscription OnDeleteCompany($owner: String) {
+  onDeleteCompany(owner: $owner) {
     id
     user {
       id
@@ -1010,6 +1085,11 @@ export const onDeleteCompany = `subscription OnDeleteCompany {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     name
     description
@@ -1030,11 +1110,12 @@ export const onDeleteCompany = `subscription OnDeleteCompany {
       }
       nextToken
     }
+    owner
   }
 }
 `;
-export const onCreateCompanyImages = `subscription OnCreateCompanyImages {
-  onCreateCompanyImages {
+export const onCreateCompanyImages = `subscription OnCreateCompanyImages($owner: String) {
+  onCreateCompanyImages(owner: $owner) {
     id
     uri
     owner
@@ -1066,6 +1147,8 @@ export const onCreateCompanyImages = `subscription OnCreateCompanyImages {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       name
       description
@@ -1080,12 +1163,13 @@ export const onCreateCompanyImages = `subscription OnCreateCompanyImages {
       images {
         nextToken
       }
+      owner
     }
   }
 }
 `;
-export const onUpdateCompanyImages = `subscription OnUpdateCompanyImages {
-  onUpdateCompanyImages {
+export const onUpdateCompanyImages = `subscription OnUpdateCompanyImages($owner: String) {
+  onUpdateCompanyImages(owner: $owner) {
     id
     uri
     owner
@@ -1117,6 +1201,8 @@ export const onUpdateCompanyImages = `subscription OnUpdateCompanyImages {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       name
       description
@@ -1131,12 +1217,13 @@ export const onUpdateCompanyImages = `subscription OnUpdateCompanyImages {
       images {
         nextToken
       }
+      owner
     }
   }
 }
 `;
-export const onDeleteCompanyImages = `subscription OnDeleteCompanyImages {
-  onDeleteCompanyImages {
+export const onDeleteCompanyImages = `subscription OnDeleteCompanyImages($owner: String) {
+  onDeleteCompanyImages(owner: $owner) {
     id
     uri
     owner
@@ -1168,6 +1255,8 @@ export const onDeleteCompanyImages = `subscription OnDeleteCompanyImages {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       name
       description
@@ -1182,6 +1271,7 @@ export const onDeleteCompanyImages = `subscription OnDeleteCompanyImages {
       images {
         nextToken
       }
+      owner
     }
   }
 }
@@ -1219,8 +1309,8 @@ export const onDeletePackage = `subscription OnDeletePackage {
   }
 }
 `;
-export const onCreatePost = `subscription OnCreatePost {
-  onCreatePost {
+export const onCreatePost = `subscription OnCreatePost($owner: String) {
+  onCreatePost(owner: $owner) {
     id
     content
     enableComment
@@ -1234,6 +1324,7 @@ export const onCreatePost = `subscription OnCreatePost {
         id
         uri
         createdAt
+        owner
       }
       nextToken
     }
@@ -1312,6 +1403,11 @@ export const onCreatePost = `subscription OnCreatePost {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     owner
     type
@@ -1322,6 +1418,7 @@ export const onCreatePost = `subscription OnCreatePost {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -1371,8 +1468,8 @@ export const onCreatePost = `subscription OnCreatePost {
   }
 }
 `;
-export const onUpdatePost = `subscription OnUpdatePost {
-  onUpdatePost {
+export const onUpdatePost = `subscription OnUpdatePost($owner: String) {
+  onUpdatePost(owner: $owner) {
     id
     content
     enableComment
@@ -1386,6 +1483,7 @@ export const onUpdatePost = `subscription OnUpdatePost {
         id
         uri
         createdAt
+        owner
       }
       nextToken
     }
@@ -1464,6 +1562,11 @@ export const onUpdatePost = `subscription OnUpdatePost {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     owner
     type
@@ -1474,6 +1577,7 @@ export const onUpdatePost = `subscription OnUpdatePost {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -1523,8 +1627,8 @@ export const onUpdatePost = `subscription OnUpdatePost {
   }
 }
 `;
-export const onDeletePost = `subscription OnDeletePost {
-  onDeletePost {
+export const onDeletePost = `subscription OnDeletePost($owner: String) {
+  onDeletePost(owner: $owner) {
     id
     content
     enableComment
@@ -1538,6 +1642,7 @@ export const onDeletePost = `subscription OnDeletePost {
         id
         uri
         createdAt
+        owner
       }
       nextToken
     }
@@ -1616,6 +1721,11 @@ export const onDeletePost = `subscription OnDeletePost {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     owner
     type
@@ -1626,6 +1736,7 @@ export const onDeletePost = `subscription OnDeletePost {
         referrer
         receiver
         createdAt
+        owner
       }
       nextToken
     }
@@ -1675,8 +1786,8 @@ export const onDeletePost = `subscription OnDeletePost {
   }
 }
 `;
-export const onCreatePostImage = `subscription OnCreatePostImage {
-  onCreatePostImage {
+export const onCreatePostImage = `subscription OnCreatePostImage($owner: String) {
+  onCreatePostImage(owner: $owner) {
     id
     uri
     postImage {
@@ -1719,6 +1830,8 @@ export const onCreatePostImage = `subscription OnCreatePostImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -1753,11 +1866,12 @@ export const onCreatePostImage = `subscription OnCreatePostImage {
       redeemDescription
     }
     createdAt
+    owner
   }
 }
 `;
-export const onUpdatePostImage = `subscription OnUpdatePostImage {
-  onUpdatePostImage {
+export const onUpdatePostImage = `subscription OnUpdatePostImage($owner: String) {
+  onUpdatePostImage(owner: $owner) {
     id
     uri
     postImage {
@@ -1800,6 +1914,8 @@ export const onUpdatePostImage = `subscription OnUpdatePostImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -1834,11 +1950,12 @@ export const onUpdatePostImage = `subscription OnUpdatePostImage {
       redeemDescription
     }
     createdAt
+    owner
   }
 }
 `;
-export const onDeletePostImage = `subscription OnDeletePostImage {
-  onDeletePostImage {
+export const onDeletePostImage = `subscription OnDeletePostImage($owner: String) {
+  onDeletePostImage(owner: $owner) {
     id
     uri
     postImage {
@@ -1881,6 +1998,8 @@ export const onDeletePostImage = `subscription OnDeletePostImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -1915,6 +2034,7 @@ export const onDeletePostImage = `subscription OnDeletePostImage {
       redeemDescription
     }
     createdAt
+    owner
   }
 }
 `;
@@ -1965,6 +2085,8 @@ export const onCreateComment = `subscription OnCreateComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2062,6 +2184,11 @@ export const onCreateComment = `subscription OnCreateComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     reportComments {
       items {
@@ -2124,6 +2251,8 @@ export const onUpdateComment = `subscription OnUpdateComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2221,6 +2350,11 @@ export const onUpdateComment = `subscription OnUpdateComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     reportComments {
       items {
@@ -2283,6 +2417,8 @@ export const onDeleteComment = `subscription OnDeleteComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2380,6 +2516,11 @@ export const onDeleteComment = `subscription OnDeleteComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     reportComments {
       items {
@@ -2395,8 +2536,8 @@ export const onDeleteComment = `subscription OnDeleteComment {
   }
 }
 `;
-export const onCreatePostReferSecond = `subscription OnCreatePostReferSecond {
-  onCreatePostReferSecond {
+export const onCreatePostReferSecond = `subscription OnCreatePostReferSecond($owner: String) {
+  onCreatePostReferSecond(owner: $owner) {
     id
     post {
       id
@@ -2438,6 +2579,8 @@ export const onCreatePostReferSecond = `subscription OnCreatePostReferSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2537,6 +2680,11 @@ export const onCreatePostReferSecond = `subscription OnCreatePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     receiverPostUser {
       id
@@ -2602,13 +2750,19 @@ export const onCreatePostReferSecond = `subscription OnCreatePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
+    owner
   }
 }
 `;
-export const onUpdatePostReferSecond = `subscription OnUpdatePostReferSecond {
-  onUpdatePostReferSecond {
+export const onUpdatePostReferSecond = `subscription OnUpdatePostReferSecond($owner: String) {
+  onUpdatePostReferSecond(owner: $owner) {
     id
     post {
       id
@@ -2650,6 +2804,8 @@ export const onUpdatePostReferSecond = `subscription OnUpdatePostReferSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2749,6 +2905,11 @@ export const onUpdatePostReferSecond = `subscription OnUpdatePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     receiverPostUser {
       id
@@ -2814,13 +2975,19 @@ export const onUpdatePostReferSecond = `subscription OnUpdatePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
+    owner
   }
 }
 `;
-export const onDeletePostReferSecond = `subscription OnDeletePostReferSecond {
-  onDeletePostReferSecond {
+export const onDeletePostReferSecond = `subscription OnDeletePostReferSecond($owner: String) {
+  onDeletePostReferSecond(owner: $owner) {
     id
     post {
       id
@@ -2862,6 +3029,8 @@ export const onDeletePostReferSecond = `subscription OnDeletePostReferSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -2961,6 +3130,11 @@ export const onDeletePostReferSecond = `subscription OnDeletePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     receiverPostUser {
       id
@@ -3026,8 +3200,14 @@ export const onDeletePostReferSecond = `subscription OnDeletePostReferSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
+    owner
   }
 }
 `;
@@ -3054,6 +3234,7 @@ export const onCreateEvent = `subscription OnCreateEvent {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -3128,6 +3309,11 @@ export const onCreateEvent = `subscription OnCreateEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
@@ -3155,6 +3341,7 @@ export const onUpdateEvent = `subscription OnUpdateEvent {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -3229,6 +3416,11 @@ export const onUpdateEvent = `subscription OnUpdateEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
@@ -3256,6 +3448,7 @@ export const onDeleteEvent = `subscription OnDeleteEvent {
         eventId
         userId
         eventStartTimeUnix
+        eventEndTime
         createdAt
       }
       nextToken
@@ -3330,6 +3523,11 @@ export const onDeleteEvent = `subscription OnDeleteEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
   }
 }
@@ -3383,6 +3581,8 @@ export const onCreateEventImage = `subscription OnCreateEventImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     createdAt
@@ -3438,6 +3638,8 @@ export const onUpdateEventImage = `subscription OnUpdateEventImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     createdAt
@@ -3493,6 +3695,8 @@ export const onDeleteEventImage = `subscription OnDeleteEventImage {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     createdAt
@@ -3542,6 +3746,8 @@ export const onCreateReport = `subscription OnCreateReport {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -3639,6 +3845,11 @@ export const onCreateReport = `subscription OnCreateReport {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     type
     status
@@ -3690,6 +3901,8 @@ export const onUpdateReport = `subscription OnUpdateReport {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -3787,6 +4000,11 @@ export const onUpdateReport = `subscription OnUpdateReport {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     type
     status
@@ -3838,6 +4056,8 @@ export const onDeleteReport = `subscription OnDeleteReport {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -3935,6 +4155,11 @@ export const onDeleteReport = `subscription OnDeleteReport {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     type
     status
@@ -3986,6 +4211,8 @@ export const onCreatePostBookmark = `subscription OnCreatePostBookmark {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4083,6 +4310,11 @@ export const onCreatePostBookmark = `subscription OnCreatePostBookmark {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     userBookmarkCode
     createdAt
@@ -4132,6 +4364,8 @@ export const onUpdatePostBookmark = `subscription OnUpdatePostBookmark {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4229,6 +4463,11 @@ export const onUpdatePostBookmark = `subscription OnUpdatePostBookmark {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     userBookmarkCode
     createdAt
@@ -4278,6 +4517,8 @@ export const onDeletePostBookmark = `subscription OnDeletePostBookmark {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4375,6 +4616,11 @@ export const onDeletePostBookmark = `subscription OnDeletePostBookmark {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     userBookmarkCode
     createdAt
@@ -4424,6 +4670,8 @@ export const onCreatePostRadeemSecond = `subscription OnCreatePostRadeemSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4521,6 +4769,11 @@ export const onCreatePostRadeemSecond = `subscription OnCreatePostRadeemSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     postId
     userId
@@ -4571,6 +4824,8 @@ export const onUpdatePostRadeemSecond = `subscription OnUpdatePostRadeemSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4668,6 +4923,11 @@ export const onUpdatePostRadeemSecond = `subscription OnUpdatePostRadeemSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     postId
     userId
@@ -4718,6 +4978,8 @@ export const onDeletePostRadeemSecond = `subscription OnDeletePostRadeemSecond {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       owner
       type
@@ -4815,6 +5077,11 @@ export const onDeletePostRadeemSecond = `subscription OnDeletePostRadeemSecond {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     postId
     userId
@@ -4891,6 +5158,11 @@ export const onCreateUserJoinedEvent = `subscription OnCreateUserJoinedEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     eventJoined {
       id
@@ -4937,9 +5209,12 @@ export const onCreateUserJoinedEvent = `subscription OnCreateUserJoinedEvent {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     eventStartTimeUnix
+    eventEndTime
     createdAt
   }
 }
@@ -5013,6 +5288,11 @@ export const onUpdateUserJoinedEvent = `subscription OnUpdateUserJoinedEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     eventJoined {
       id
@@ -5059,9 +5339,12 @@ export const onUpdateUserJoinedEvent = `subscription OnUpdateUserJoinedEvent {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     eventStartTimeUnix
+    eventEndTime
     createdAt
   }
 }
@@ -5135,6 +5418,11 @@ export const onDeleteUserJoinedEvent = `subscription OnDeleteUserJoinedEvent {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     eventJoined {
       id
@@ -5181,9 +5469,12 @@ export const onDeleteUserJoinedEvent = `subscription OnDeleteUserJoinedEvent {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
     }
     eventStartTimeUnix
+    eventEndTime
     createdAt
   }
 }
@@ -5250,6 +5541,8 @@ export const onCreateReportComment = `subscription OnCreateReportComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       reportComments {
         nextToken
@@ -5320,6 +5613,11 @@ export const onCreateReportComment = `subscription OnCreateReportComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
   }
@@ -5387,6 +5685,8 @@ export const onUpdateReportComment = `subscription OnUpdateReportComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       reportComments {
         nextToken
@@ -5457,6 +5757,11 @@ export const onUpdateReportComment = `subscription OnUpdateReportComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
   }
@@ -5524,6 +5829,8 @@ export const onDeleteReportComment = `subscription OnDeleteReportComment {
         expireAt
         level
         createdAt
+        memberShipPrice
+        firstLogin
       }
       reportComments {
         nextToken
@@ -5594,6 +5901,11 @@ export const onDeleteReportComment = `subscription OnDeleteReportComment {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAt
   }
@@ -5668,6 +5980,11 @@ export const onCreateUserBlock = `subscription OnCreateUserBlock {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAtUnix
     createdAt
@@ -5743,6 +6060,11 @@ export const onUpdateUserBlock = `subscription OnUpdateUserBlock {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAtUnix
     createdAt
@@ -5818,6 +6140,11 @@ export const onDeleteUserBlock = `subscription OnDeleteUserBlock {
       events {
         nextToken
       }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
     }
     createdAtUnix
     createdAt
@@ -5863,7 +6190,76 @@ export const onCreateFeedback = `subscription OnCreateFeedback {
     topic
     message
     createdAtUnix
-    userId
+    user {
+      id
+      staffID
+      username
+      birthDate
+      firstName
+      lastName
+      mobilePhone
+      email
+      amgId
+      amgModel
+      amgShowroom
+      nickName
+      citizenId
+      image
+      address
+      subDistrict
+      district
+      province
+      active
+      pushToken
+      type
+      expireAt
+      level
+      createdAt
+      images {
+        nextToken
+      }
+      companies {
+        nextToken
+      }
+      postsOfUser {
+        nextToken
+      }
+      userComments {
+        nextToken
+      }
+      userReports {
+        nextToken
+      }
+      userBookmarks {
+        nextToken
+      }
+      referrers {
+        nextToken
+      }
+      receivers {
+        nextToken
+      }
+      userRadeem {
+        nextToken
+      }
+      userEvents {
+        nextToken
+      }
+      reportComments {
+        nextToken
+      }
+      userBlocks {
+        nextToken
+      }
+      events {
+        nextToken
+      }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
+    }
     createdAt
   }
 }
@@ -5874,7 +6270,76 @@ export const onUpdateFeedback = `subscription OnUpdateFeedback {
     topic
     message
     createdAtUnix
-    userId
+    user {
+      id
+      staffID
+      username
+      birthDate
+      firstName
+      lastName
+      mobilePhone
+      email
+      amgId
+      amgModel
+      amgShowroom
+      nickName
+      citizenId
+      image
+      address
+      subDistrict
+      district
+      province
+      active
+      pushToken
+      type
+      expireAt
+      level
+      createdAt
+      images {
+        nextToken
+      }
+      companies {
+        nextToken
+      }
+      postsOfUser {
+        nextToken
+      }
+      userComments {
+        nextToken
+      }
+      userReports {
+        nextToken
+      }
+      userBookmarks {
+        nextToken
+      }
+      referrers {
+        nextToken
+      }
+      receivers {
+        nextToken
+      }
+      userRadeem {
+        nextToken
+      }
+      userEvents {
+        nextToken
+      }
+      reportComments {
+        nextToken
+      }
+      userBlocks {
+        nextToken
+      }
+      events {
+        nextToken
+      }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
+    }
     createdAt
   }
 }
@@ -5885,7 +6350,76 @@ export const onDeleteFeedback = `subscription OnDeleteFeedback {
     topic
     message
     createdAtUnix
-    userId
+    user {
+      id
+      staffID
+      username
+      birthDate
+      firstName
+      lastName
+      mobilePhone
+      email
+      amgId
+      amgModel
+      amgShowroom
+      nickName
+      citizenId
+      image
+      address
+      subDistrict
+      district
+      province
+      active
+      pushToken
+      type
+      expireAt
+      level
+      createdAt
+      images {
+        nextToken
+      }
+      companies {
+        nextToken
+      }
+      postsOfUser {
+        nextToken
+      }
+      userComments {
+        nextToken
+      }
+      userReports {
+        nextToken
+      }
+      userBookmarks {
+        nextToken
+      }
+      referrers {
+        nextToken
+      }
+      receivers {
+        nextToken
+      }
+      userRadeem {
+        nextToken
+      }
+      userEvents {
+        nextToken
+      }
+      reportComments {
+        nextToken
+      }
+      userBlocks {
+        nextToken
+      }
+      events {
+        nextToken
+      }
+      feedbacks {
+        nextToken
+      }
+      memberShipPrice
+      firstLogin
+    }
     createdAt
   }
 }

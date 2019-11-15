@@ -25,6 +25,8 @@ import { getUnique } from '../../containers/utils';
 import { deleteUserBlock } from '../../graphql/mutations';
 import { graphql } from 'react-apollo';
 
+let loadMore = false
+
 
 const BlockScreen = ({navigation , userProfile , deleteUserBlock  , isFocused}) => (
     <Screen style={{backgroundColor: '#fff'}}>
@@ -52,6 +54,14 @@ const BlockScreen = ({navigation , userProfile , deleteUserBlock  , isFocused}) 
                 {
                     ({data , loading , error , fetchMore}) => {
                         if(loading) return null;
+                        if(data.listUserBlocks.items.length === 0) {
+                            return  (
+                                <View styleName="vertical v-center h-center" style={{flex: 1}}>
+                                    <Title style={{color:'#ccc' , fontWeight:'bold'}}>No Block</Title>
+                                    <Caption style={{color:'#ccc'}}>This page will show data after you have blocked user</Caption>
+                                </View>
+                            )
+                        } 
                         return (
                             <FlatList
                                 removeClippedSubViews
@@ -64,25 +74,30 @@ const BlockScreen = ({navigation , userProfile , deleteUserBlock  , isFocused}) 
                                 maxToRenderPerBatch={2}
                                 onEndReachedThreshold={0.5}
                                 onEndReached={()=>{
-                                    fetchMore({
-                                        variables: {
-                                            nextToken: data.listUserBlocks.nextToken
-                                        },
-                                        updateQuery: (prev, { fetchMoreResult }) => {
-                                            if (!fetchMoreResult) return prev;
-                                            let concatArray = [...prev.listUserBlocks.items , ...fetchMoreResult.listUserBlocks.items];
-                                            let uniqueValue = getUnique(concatArray , 'id');
-                                            let newItems = Object.assign({}, prev, {
-                                                listUserBlocks: Object.assign({} , prev.listUserBlocks , {
-                                                    items: [...uniqueValue] ,
-                                                    nextToken : fetchMoreResult.listUserBlocks.nextToken
-                                                }),
-                                                
-                                            });
-                                            // console.log(newItems.listPosts.items.map((item)=>item.id));
-                                            return newItems;
-                                        }
-                                    })
+                                    if(data.listUserBlocks.nextToken && !loadMore) {
+                                        loadMore = true;
+                                        fetchMore({
+                                            variables: {
+                                                nextToken: data.listUserBlocks.nextToken
+                                            },
+                                            updateQuery: (prev, { fetchMoreResult }) => {
+                                                if (!fetchMoreResult) return prev;
+                                                let concatArray = [...prev.listUserBlocks.items , ...fetchMoreResult.listUserBlocks.items];
+                                                let uniqueValue = getUnique(concatArray , 'id');
+                                                let newItems = Object.assign({}, prev, {
+                                                    listUserBlocks: Object.assign({} , prev.listUserBlocks , {
+                                                        items: [...uniqueValue] ,
+                                                        nextToken : fetchMoreResult.listUserBlocks.nextToken
+                                                    }),
+                                                    
+                                                });
+                                                loadMore = false;
+                                                // console.log(newItems.listPosts.items.map((item)=>item.id));
+                                                return newItems;
+                                            }
+                                        })
+                                    }
+                                    
                                 }}
                             />
                         )

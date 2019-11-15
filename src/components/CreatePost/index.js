@@ -102,6 +102,9 @@ const CreatePostScreen = ({navigation , onStateChange , state , onAddTag , onPic
                  : null                
             }
         />
+        <Spinner 
+            visible={state.loading}
+        />
         <ScrollView>
         <View styleName="vertical" style={{padding :20}}>
             <View styleName="horizontal v-center" style={{height: 50}}>
@@ -125,15 +128,15 @@ const CreatePostScreen = ({navigation , onStateChange , state , onAddTag , onPic
             <View styleName="horizontal v-center space-between" style={styles.formGroup}>
                 <Text>Location</Text>
                 {
-                    state.place.placeName 
-                    ? <View styleName="horizontal v-center" style={{flex: 0.7}}><Text style={{flex: 1}} numberOfLines={1}>{state.place.placeName}</Text></View>
+                    state.location.placeName 
+                    ? <View styleName="horizontal v-center" style={{flex: 0.7}}><Text style={{flex: 1}} numberOfLines={1}>{state.location.placeName}</Text></View>
                     : null
                 }
                 <TouchableOpacity onPress={()=>{
                     navigation.push('MapView' , {onSelected: (place)=> {
                         if(onStateChange) {
                             // onStateChange('locationName' , locationName);
-                            onStateChange('place' , place);
+                            onStateChange('location' , place);
                             
                         }
                     }});

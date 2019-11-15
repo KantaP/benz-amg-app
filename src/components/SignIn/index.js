@@ -40,13 +40,17 @@ const loginButton = {
   fontFamily: 'CAR',
 }
 
-const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps , onOpenWeb}) => (
+const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps , onOpenWeb , state}) => {
+  // let usernameValidate = (state.submit && !state.username) ? false : true;
+  // let passwordValidate = (state.submit && !state.password) ? false : true;
+  // console.log(usernameValidate);
+  return(
     <Screen>
       <NavigationBar
         // title="TELEMED"
         styleName="clear"
       />
-      <RNImage  
+      <RNImage   
         style={{
           flex: 1,
           width: null,
@@ -76,7 +80,7 @@ const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps 
                 }}
                 style={Object.assign(inputTextStyle , {width: 300})}
                 placeholder={screenProps.t('email')}
-                placeholderTextColor="white"
+                // placeholderTextColor="white"
               />
           </View>
           <View 
@@ -88,10 +92,10 @@ const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps 
                 onChangeText={(text)=>{
                   if(onChangeText) onChangeText('password' , text);
                 }}
-                style={Object.assign(inputTextStyle, {width: 300})}
+                style={Object.assign(inputTextStyle, {width: 300 })}
                 placeholder={screenProps.t('password')}
                 secureTextEntry
-                placeholderTextColor="white"
+                // placeholderTextColor="white"
               />
           </View>
           <View 
@@ -146,6 +150,7 @@ const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps 
       </View>
       </RNImage>
     </Screen>
-);
+)
+};
 
 export default SignInComponent;
