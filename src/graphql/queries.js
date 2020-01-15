@@ -28,6 +28,7 @@ export const getUser = `query GetUser($id: ID!) {
     level
     createdAt
     firstLogin
+    memberExpiredAt
     images {
       items {
         id
@@ -3022,6 +3023,103 @@ export const searchEvents = `query SearchEvents(
         level
         createdAt
       }
+    }
+    nextToken
+  }
+}
+`;
+
+export const postsByActive = `query PostsByActive(
+  $active: String
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelPostFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  postsByActive(
+    active: $active
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      content
+      enableComment
+      tags
+      location {
+        placeName
+        placeLatLng
+      }
+      postImages {
+        nextToken
+      }
+      postComments {
+        nextToken
+      }
+      postOfUser {
+        id
+        staffID
+        username
+        birthDate
+        firstName
+        lastName
+        mobilePhone
+        email
+        amgId
+        amgModel
+        amgShowroom
+        nickName
+        citizenId
+        image
+        address
+        subDistrict
+        district
+        province
+        active
+        pushToken
+        type
+        expireAt
+        level
+        createdAt
+        memberShipPrice
+        firstLogin
+      }
+      owner
+      type
+      createdAt
+      refers {
+        nextToken
+      }
+      postBookmarks {
+        nextToken
+      }
+      reports {
+        nextToken
+      }
+      postRadeem {
+        nextToken
+      }
+      countComment
+      countRefer
+      countRadeem
+      countBookmark
+      countReport
+      countConnect
+      radeemQuota
+      expireAtUnix
+      expireAt
+      expire
+      pin
+      createdAtUnix
+      expireRedeemAt
+      expireRedeemAtUnix
+      redeemImage
+      redeemDescription
+      active
     }
     nextToken
   }

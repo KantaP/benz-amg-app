@@ -26,6 +26,7 @@ class PreloadPostCard extends React.PureComponent {
                 query={query} 
                 variables={{
                     id:props.id , 
+                    sortImage: 'ASC',
                     filterPostBookmark: {
                         userBookmarkCode: {
                             eq: props.userProfile.id
@@ -88,6 +89,24 @@ class PreloadPostCard extends React.PureComponent {
                                     }
                                 })
                             }
+                            onCreatePostRadeemSecond={()=>
+                                subscribeToMore({
+                                    document: gql(onCreatePostRadeemSecond),
+                                    updateQuery: (prev, { subscriptionData}) => {
+                                        if (!subscriptionData.data) return prev;
+                                        console.log(subscriptionData.data.onCreatePostRadeemSecond)
+                                        const newPostItem = subscriptionData.data.onCreatePostRadeemSecond;
+                                        if(prev.getPost.id !== newPostItem.postRadeem.id) return prev;
+                                        if(prev.getPost.postRadeem.items.filter((item)=>item.id === newPostItem.id).length) return prev;
+                                        return Object.assign({} , prev , {
+                                            getPost: Object.assign({} , prev.getPost , {
+                                                postRadeem: Object.assign({} , prev.getPost.postRadeem , {
+                                                    items: [newPostItem , ...prev.getPost.postRadeem.items]
+                                                })
+                                            })
+                                        })
+                                    }
+                                })}
                         />);
                     }
                 }

@@ -66,6 +66,7 @@ import Toast from 'react-native-easy-toast';
 import ToastRefService from './services/ToastRefService';
 import FirstTermContainer from './containers/FirstTerm';
 import TutorialContainer from './containers/Tutorial';
+import RegisterContainer from './containers/Register';
 
 
 console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
@@ -211,7 +212,7 @@ const AppTopStack = createStackNavigator({
 
 const AuthStack = createStackNavigator({ 
   SignIn: SignInContainer ,
-  
+  Register: RegisterContainer
 });
 const AppContainer = createAppContainer(createSwitchNavigator(
   {

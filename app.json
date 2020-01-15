@@ -17,16 +17,21 @@
       "backgroundColor": "#191919"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 60
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "buildNumber" : "2",
       "bundleIdentifier": "com.i3gateway.benzamg",
       "supportsTablet": false,
       "config": {
         "googleMapsApiKey": "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
+      },
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Please allow to access photo library for add photo in your post",
+        "NSLocationWhenInUseUsageDescription": "Please allow to access your location to find a place around you and share people in your post"
       }
     },
     "android": {
@@ -36,7 +41,35 @@
           "apiKey": "AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE"
         }
       },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "versionCode" : 1,
+      "permissions" : [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "MANAGE_DOCUMENTS",
+        "READ_CONTACTS",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "READ_EXTERNAL_STORAGE",
+        "READ_PHONE_STATE",
+        "RECORD_AUDIO",
+        "USE_FINGERPRINT",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "WRITE_EXTERNAL_STORAGE",
+        "com.anddoes.launcher.permission.UPDATE_COUNT",
+        "com.android.launcher.permission.INSTALL_SHORTCUT",
+        "com.google.android.c2dm.permission.RECEIVE",
+        "com.google.android.gms.permission.ACTIVITY_RECOGNITION",
+        "com.google.android.providers.gsf.permission.READ_GSERVICES",
+        "com.htc.launcher.permission.READ_SETTINGS",
+        "com.htc.launcher.permission.UPDATE_SHORTCUT",
+        "com.majeur.launcher.permission.UPDATE_BADGE",
+        "com.sec.android.provider.badge.permission.READ",
+        "com.sec.android.provider.badge.permission.WRITE",
+        "com.sonyericsson.home.permission.BROADCAST_BADGE"
+      ]
     }
   }
 }

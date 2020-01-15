@@ -35,7 +35,8 @@ class GreetingContainer extends React.Component {
             type: 'post' ,
             radeemQuota: 0,
             createdAt,
-            pin:'off'
+            pin:'off',
+            active:'on'
         };
         // this.props.requestStarted();
         this.props.onAddPost(postDetails);

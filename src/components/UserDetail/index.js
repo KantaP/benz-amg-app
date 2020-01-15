@@ -175,11 +175,13 @@ const UserDetailScreen = (
                             [
                                 
                                 <View styleName="horizontal" style={{
-                                    padding:10 , 
-                                    borderTopWidth: 1 , 
-                                    borderTopColor:'#eee',
-                                    borderBottomWidth: 1 , 
-                                    borderBottomColor:'#eee'
+                                    paddingHorizontal: 10 ,
+                                    paddingVertical: 4, 
+                                    // borderTopWidth: 0.5 , 
+                                    // borderTopColor:'#eee',
+                                    borderBottomWidth: 0.5 , 
+                                    borderBottomColor:'#eee',
+                                    backgroundColor:'#f6f6f6'
                                 }}>
                                     <Title>Post</Title>
                                 </View>

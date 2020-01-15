@@ -36,8 +36,9 @@ class TutorialContainer extends React.Component {
                         <Title style={styles.label}>My Privilege</Title>
                     </View>
                     <View styleName="horizontal h-center" style={{marginTop: 5, paddingHorizontal: 20}}>
-                        <Caption style={styles.contentColor} numberOfLines={3}>
-                            LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LOREM IPSUM HAS BEEN THE INDUSTRY'S STANDARD
+                       <Caption style={styles.contentColor} numberOfLines={3}>
+                            AMG Club Thailand application connects AMG community and provide exclusive services to the members. 
+                            Let's grown AMG Thailand community together.
                         </Caption>
                     </View>
                     <View styleName="horizontal h-center" style={{marginTop: 20}}>

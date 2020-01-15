@@ -11,13 +11,13 @@ import sendBirdService from '../services/SendBirdService';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions'
 import { hasNotificationChat } from '../actions/notification';
-
 // raw_data
 import changwats from '../raw_data/changwats';
 import amphoes from '../raw_data/amphoes';
 import tambons  from '../raw_data/tambons';
 import { setChangwats , setAmphoes , setTambons } from '../actions/forms';
-
+import moment from 'moment'
+import toastRefService from '../services/ToastRefService';
 class AuthLoadingContainer extends React.Component {
     static navigationOptions = { header: null };
 
@@ -37,8 +37,15 @@ class AuthLoadingContainer extends React.Component {
 
             // console.log(userData);
             let myProfile = await this.userProfile(userData.username);
-            if(!myProfile.data.getUser.active) {
-                toastRefService.get().show('Your username has not been activated');
+            let expiredAt = moment(myProfile.data.getUser.memberExpiredAt);
+            if(
+                !myProfile.data.getUser.active ||
+                (
+                    myProfile.data.getUser.memberExpiredAt !== null &&
+                    moment().isAfter(expiredAt, 'day')
+                )
+            ) {
+                toastRefService.get().show('Your username has not been activated or already expired');
                 this.props.navigation.navigate('Auth');
                 // this.setState({ showSpinner: false });
                 return false;
@@ -61,7 +68,7 @@ class AuthLoadingContainer extends React.Component {
             sendBirdService.connect(myProfile.data.getUser.id);
             sendBirdService.updateProfile(myProfile.data.getUser.id , {
                 nickname: myProfile.data.getUser.firstName + ' ' + myProfile.data.getUser.lastName,
-                profile_url: myProfile.data.getUser.image
+                profile_url: myProfile.data.getUser.image || 'https://resources-static.s3-ap-southeast-1.amazonaws.com/images/user-blank.jpg'
             })
             .then((json)=>{
                 console.log('update sendbird profile');
@@ -241,6 +248,9 @@ class AuthLoadingContainer extends React.Component {
                     },
                     level: {
                         eq: 'user'
+                    },
+                    active: {
+                        eq: true
                     }
                 }
                 let variables = {

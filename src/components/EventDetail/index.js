@@ -134,7 +134,7 @@ const EventDetailScreen = ({navigation , state , event , onCreateJoin , onDelete
                                             data.getEvent.quota &&
                                             (
                                                 <View styleName="vertical h-center" style={{flex: 0.25}}>
-                                                    <Title>Quata</Title>
+                                                    <Title>Quota</Title>
                                                     <Caption style={(Platform.OS === 'ios') ? {lineHeight: 0} : {lineHeight: 12}}>{state.countJoined} / {data.getEvent.quota}</Caption>
                                                 </View>
                                             )

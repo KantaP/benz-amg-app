@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
 import { API , graphqlOperation } from 'aws-amplify';
 import { itemsByPostType , itemsByPin } from '../graphql/queries';
-import moment from 'moment';
+import moment from 'moment'; 
 import { Updates } from 'expo';
 
 class HomeContainer extends React.Component {
@@ -69,7 +69,7 @@ class HomeContainer extends React.Component {
                     ge: moment().format()
                 },
                 limit: 5,
-                sortDirection: 'DESC'
+                sortDirection: 'DESC',
             }));
             // let userPost = await API.graphql(graphqlOperation(itemsByPostType, {
             //     type: 'Post',
@@ -78,6 +78,7 @@ class HomeContainer extends React.Component {
             //     },
             //     filter: filter
             // }))
+            console.log('pin' , pinPost);
             this.setState({pinPost: pinPost.data.itemsByPin.items});
             // console.log('pin post' , pinPost.data.itemsByPin.items.length);
             // console.log('user post' , userPost.data.itemsByPostType.items.length);

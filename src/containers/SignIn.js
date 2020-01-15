@@ -8,6 +8,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { getUser } from '../graphql/queries'; 
 import toastRefService from '../services/ToastRefService';
 import { Linking } from 'react-native';
+import moment from 'moment';
 class SignInContainer extends React.Component {
 
     static navigationOptions = { header: null };
@@ -40,8 +41,15 @@ class SignInContainer extends React.Component {
                 const user = await Auth.signIn(username, password)
                 // console.log('user successfully signed in!', user)
                 const userProfile = await API.graphql(graphqlOperation(getUser , {id: user.attributes.sub}));
-                if(!userProfile.data.getUser.active) {
-                    toastRefService.get().show('Your username has not been activated');
+                let expiredAt = moment(userProfile.data.getUser.memberExpiredAt);
+                if(
+                    !userProfile.data.getUser.active ||
+                    (
+                        userProfile.data.getUser.memberExpiredAt !== null &&
+                        moment().isAfter(expiredAt, 'day')
+                    )
+                ) {
+                    toastRefService.get().show('Your username has not been activated or already expired');
                     this.setState({ showSpinner: false });
                     return false;
                 }
@@ -64,6 +72,7 @@ class SignInContainer extends React.Component {
          
         return (
             <SignInComponent
+                navigation={this.props.navigation}
                 state={this.state}
                 screenProps={this.props.screenProps}
                 onShowSpinner={this.onShowSpinner}

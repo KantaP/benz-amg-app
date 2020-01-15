@@ -44,8 +44,9 @@ class SectionHeader extends React.PureComponent {
       };
   
       var viewStyle = {
-        backgroundColor: '#eee',
-        padding: 10,
+        backgroundColor: '#f6f6f6',
+        paddingVertical: 4,
+        paddingLeft: 10,
         flex: 0.90
       };
       return (

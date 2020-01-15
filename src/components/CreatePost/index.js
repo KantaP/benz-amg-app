@@ -154,7 +154,7 @@ const CreatePostScreen = ({navigation , onStateChange , state , onAddTag , onPic
                         state.tags.map((tag)=>(
                             <View 
                             styleName="horizontal v-center space-between" 
-                            style={{marginLeft:5 , backgroundColor:'#ccc', padding: 8 , borderRadius: 10}}>
+                            style={{marginLeft:5 , backgroundColor:'#f6f6f6', padding: 8 , borderRadius: 10}}>
                                 <Text 
                                 style={{color:'#fff'}}>
                                     {tag}

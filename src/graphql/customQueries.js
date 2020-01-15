@@ -1,4 +1,4 @@
-export const getPost = `query GetPost($id: ID! , $filterPostRadeem: ModelPostRadeemSecondFilterInput , $filterPostBookmark: ModelPostBookmarkFilterInput) {
+export const getPost = `query GetPost($id: ID! , $sortImage: ModelSortDirection ,$filterPostRadeem: ModelPostRadeemSecondFilterInput , $filterPostBookmark: ModelPostBookmarkFilterInput) {
     getPost(id: $id) {
       id
       content
@@ -8,7 +8,7 @@ export const getPost = `query GetPost($id: ID! , $filterPostRadeem: ModelPostRad
         placeName
         placeLatLng
       }
-      postImages {
+      postImages(sortDirection: $sortImage) {
         items {
           id
           uri

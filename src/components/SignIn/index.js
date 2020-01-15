@@ -40,7 +40,7 @@ const loginButton = {
   fontFamily: 'CAR',
 }
 
-const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps , onOpenWeb , state}) => {
+const SignInComponent = ({navigation , onSignIn , onChangeText , onShowSpinner , screenProps , onOpenWeb , state}) => {
   // let usernameValidate = (state.submit && !state.username) ? false : true;
   // let passwordValidate = (state.submit && !state.password) ? false : true;
   // console.log(usernameValidate);
@@ -141,9 +141,10 @@ const SignInComponent = ({onSignIn , onChangeText , onShowSpinner , screenProps 
           <Text style={textStyle}>{screenProps.t('forgotpassword')}</Text>
         </Button>
         <Button styleName="clear" onPress={()=>{
-          if(onOpenWeb) {
-            onOpenWeb('signup')
-          }
+          // if(onOpenWeb) {
+          //   onOpenWeb('signup')
+          // }
+          navigation.push('Register')
         }}>
           <Text style={textStyle}>{screenProps.t('registration')}</Text>
         </Button>

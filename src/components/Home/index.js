@@ -23,7 +23,7 @@ import _ from 'lodash';
 import { getUnique } from '../../containers/utils';
 import { Query } from 'react-apollo';
 import { onCreatePost , onCreatePostImage , onDeletePost } from '../../graphql/subscriptions';
-import { itemsByPinCreated } from '../../graphql/queries';
+import { itemsByPinCreated , postsByActive } from '../../graphql/queries';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import GreetingContainer from '../../containers/Greeting';
@@ -51,10 +51,27 @@ const HomeScreen = (
     }
 ) => {
     let queryVairables = {};
-    queryVairables['pin'] = 'off';
+    queryVairables['active'] = 'on';
     queryVairables['sortDirection'] = 'DESC';
     queryVairables['createdAt'] = {
         beginsWith: moment().format('YYYY')
+    }
+    queryVairables['filter'] = {
+        or : [
+            {
+                pin: {
+                    eq: 'off'
+                }
+            },
+            {
+                pin: {
+                    eq: 'on'
+                },
+                expireAt: {
+                    lt: moment().format()
+                },
+            }
+        ]
     }
     queryVairables['limit'] = 5;
     let mixedBlock = [...listUserBlocks,...listUserWhoBlockCurrentUser]
@@ -149,7 +166,7 @@ const HomeScreen = (
                 (isFocused) &&
                 (
                     <Query 
-                        query={gql(itemsByPinCreated)} 
+                        query={gql(postsByActive)} 
                         variables={queryVairables} 
                         fetchPolicy="network-only"
                     >
@@ -160,7 +177,7 @@ const HomeScreen = (
                             if(result.error) return new Error(result.error);
                             return (
                                 <PostList
-                                    data={[...state.pinPost , ...data.itemsByPinCreated.items]}
+                                    data={[...state.pinPost , ...data.postsByActive.items]}
                                     navigation={navigation}
                                     refreshing={state.refreshing}
                                     refetch={()=>{
@@ -168,23 +185,23 @@ const HomeScreen = (
                                         refetch();
                                     }}
                                     loadMore={()=>{
-                                        if(data.itemsByPinCreated.nextToken && !loadMore) {
+                                        if(data.postsByActive.nextToken && !loadMore) {
                                             // nextToken = data.itemsByPinCreated.nextToken;
                                             // console.log('nextToken' , data.itemsByPinCreated.nextToken);
                                             loadMore = true;
                                             fetchMore({
                                                 variables: {
-                                                    nextToken: data.itemsByPinCreated.nextToken
+                                                    nextToken: data.postsByActive.nextToken
                                                 },
                                                 updateQuery: (prev, { fetchMoreResult }) => {
                                                     if (!fetchMoreResult) return prev;
                                                     // if(nextToken === fetchMoreResult.itemsByPinCreated.nextToken) return prev;
-                                                    let concatArray = [...prev.itemsByPinCreated.items , ...fetchMoreResult.itemsByPinCreated.items];
+                                                    let concatArray = [...prev.postsByActive.items , ...fetchMoreResult.postsByActive.items];
                                                     let uniqueValue = getUnique(concatArray , 'id');
                                                     let newItems = Object.assign({}, prev, {
-                                                        itemsByPinCreated: Object.assign({} , prev.itemsByPinCreated , {
+                                                        postsByActive: Object.assign({} , prev.postsByActive , {
                                                             items: [...uniqueValue] ,
-                                                            nextToken : fetchMoreResult.itemsByPinCreated.nextToken
+                                                            nextToken : fetchMoreResult.postsByActive.nextToken
                                                         }),
                                                         
                                                     });
@@ -232,15 +249,14 @@ const HomeScreen = (
                                                 // console.log('subscription data create post' , subscriptionData)
                                                 if (!subscriptionData.data) return prev;
                                                 const newPostItem = subscriptionData.data.onCreatePost;
-                                                const idAlreadyExists =
-                                                                        prev.itemsByPinCreated.items.filter(item => {
+                                                const idAlreadyExists = prev.postsByActive.items.filter(item => {
                                                                             return item.id === newPostItem.id;
                                                                         }).length > 0;
                                                 if(idAlreadyExists) return prev;
                                                 
                                                 return Object.assign({}, prev, {
-                                                    itemsByPinCreated: Object.assign({} , prev.itemsByPinCreated , {
-                                                        items: [newPostItem, ...prev.itemsByPinCreated.items]
+                                                    postsByActive: Object.assign({} , prev.postsByActive , {
+                                                        items: [newPostItem, ...prev.postsByActive.items]
                                                     })
                                                 });
                                             }
@@ -258,8 +274,8 @@ const HomeScreen = (
                                                 const deletePostItem = subscriptionData.data.onDeletePost;
                                                 // console.log('delete post')
                                                 return Object.assign({}, prev, {
-                                                    itemsByPinCreated: Object.assign({} , prev.itemsByPinCreated , {
-                                                        items: prev.itemsByPinCreated.items.filter((item)=>item.id!==deletePostItem.id)
+                                                    postsByActive: Object.assign({} , prev.postsByActive , {
+                                                        items: prev.postsByActive.items.filter((item)=>item.id!==deletePostItem.id)
                                                     })
                                                 });
                                             }

@@ -74,7 +74,7 @@ const EventScreen = ({navigation,  userProfile, isFocused , notification}) => (
             }
         />
         <View style={{marginTop: 5}}></View>
-        <View style={{padding: 10 , backgroundColor:'#eee'}}>
+        <View style={{padding: 10 , backgroundColor:'#f6f6f6'}}>
             <Text>My Event</Text>
         </View>
         {
@@ -82,7 +82,7 @@ const EventScreen = ({navigation,  userProfile, isFocused , notification}) => (
             ? (<ListMyEvent navigation={navigation} startTimeUnix={moment().toISOString()} userProfile={userProfile} />)
             : null
         }
-        <View style={{padding: 10 , backgroundColor:'#eee'}}>
+        <View style={{padding: 10 , backgroundColor:'#f6f6f6'}}>
             <Text style={{color:'red'}}>Upcoming Event</Text>
         </View>
         {

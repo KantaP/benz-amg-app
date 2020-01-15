@@ -60,8 +60,8 @@ class SendBirdService {
         });
     }
 
-    updateProfile = (user_id, {nickname , profile_url = this.defaultProfileUrl}) => {
-        if(profile_url === null) {
+    updateProfile = (user_id, {nickname , profile_url}) => {
+        if(profile_url === null || !profile_url) {
             profile_url = this.defaultProfileUrl;
         }
         return fetch(`https://api-${this.appId}.sendbird.com/v3/users/${user_id}` , {

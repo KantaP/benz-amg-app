@@ -203,7 +203,8 @@ class CreatePostContainer extends React.Component {
                         type: 'post' ,
                         radeemQuota: 0,
                         createdAt,
-                        pin:'off'
+                        pin:'off',
+                        active:'on'
                     };
                     // console.log(postDetails);
                     // this.props.requestStarted();

@@ -73,11 +73,12 @@ class PostCard extends React.Component {
             marginLeft: 5
         } ,
         actionButton : {
-            borderColor: '#eee' ,
+            borderColor: '#f6f6f6' ,
             borderTopWidth: 0.5,
             borderLeftWidth: 0.4,
             borderRightWidth: 0.4,
             borderBottomWidth: 0,
+            
             padding: 0,
             height: 40,
         }
@@ -86,6 +87,7 @@ class PostCard extends React.Component {
     timer = null;
     updatePost = null;
     createPostImage = null;
+    createPostRadeem = null;
     onCreatePostRadeem = null;
     setSheetRef = null;
     state = {
@@ -111,10 +113,10 @@ class PostCard extends React.Component {
     
     
     componentDidMount() {
-        let { onUpdatePost , onCreatePostImage  } = this.props;
+        let { onUpdatePost , onCreatePostImage , onCreatePostRadeemSecond  } = this.props;
         if(onUpdatePost) this.updatePost = onUpdatePost();
         if(onCreatePostImage) this.createPostImage = onCreatePostImage();
-
+        if(onCreatePostRadeemSecond) this.createPostRadeem = onCreatePostRadeemSecond();
 
         if(this.props.post.postBookmarks.items.length > 0) {
             // console.log('bookmark id' , this.props.post.postBookmarks.items[0].id);
@@ -133,6 +135,7 @@ class PostCard extends React.Component {
     componentWillUnmount() {
         this.updatePost();
         this.createPostImage();
+        this.createPostRadeem();
     }
 
     onBookmark = () => {
@@ -190,9 +193,11 @@ class PostCard extends React.Component {
                     countRadeem: this.props.post.countRadeem + 1
                 })
                 toastRefService.get().show('Use redeem success.');
+                this.onCloseViewRadeem();
             })
             .catch((error)=>{
                 toastRefService.get().show('Something went wrong.');
+                this.onCloseViewRadeem();
             })
         }catch(error){
             toastRefService.get().show('Something went wrong.');
@@ -259,7 +264,7 @@ class PostCard extends React.Component {
         // console.log(photos);
         // console.log(this.props.post.postOfUser);
        return ( 
-       <Card style={{width , flex: 1 , borderBottomWidth: 10 , borderBottomColor:'#eee'}}>
+       <Card style={{width , flex: 1 , borderBottomWidth: 10 , borderBottomColor:'#f6f6f6'}}>
            {/* Card header */}
             <View styleName="horizontal v-center space-between" style={{paddingLeft: 0 , paddingRight: 0}}>
                 
@@ -416,7 +421,7 @@ class PostCard extends React.Component {
                 {
                     this.props.post.type === 'privilege' &&
                     (
-                        <View styleName="horizontal v-center space-between" style={{backgroundColor:'#eee' ,padding: 5}}>
+                        <View styleName="horizontal v-center space-between" style={{backgroundColor:'#f6f6f6' ,padding: 5 }}>
                             <View styleName="horizontal  v-center"  style={this.style.stack}>
                                 <View styleName="horizontal v-center" style={this.style.iconInStack}>
                                     <MaterialIcon name="content-cut" style={{fontSize: 12 , color:'#fff'}} />
@@ -718,7 +723,9 @@ class PostCard extends React.Component {
                                             },
                                             {
                                                 text: 'Cancel',
-                                                onPress: () => console.log('Cancel Pressed'),
+                                                onPress: () => {
+                                                    this.onCloseViewRadeem();
+                                                },
                                                 style: 'cancel',
                                             },
                                         ]
