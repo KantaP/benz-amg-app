@@ -12,6 +12,7 @@ import { navTitle } from '../components/styles';
 import { connect } from 'react-redux';
 import { agreeTerm } from '../actions/firstTime';
 
+import PDFReader from 'rn-pdf-reader-js'
 const styles = {
     contentColor: {
         color: '#fff'
@@ -36,18 +37,15 @@ class FirstTermContainer extends React.Component {
                     source={require('../assets/images/bg.jpg')}
                 >
                     
-                    <ScrollView style={{marginTop: 50 , marginBottom: 20 , padding: 10}}>
-                        <View styleName="vertical">
-                            <View styleName="horizontal h-center" style={{marginBottom: 20}}>
-                                <Title style={styles.label}>Term & Condition</Title>
-                            </View>
-
-                            <Title style={styles.label}>Introduction</Title>
-                            <View style={{marginTop: 5}}></View>
-                            <Text style={styles.contentColor} numberOfLines={5}>
-                                These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at Website.com.
-                            </Text>
+                    <ScrollView contentContainerStyle={{flex: 1}} style={{marginTop: 50 , marginBottom: 20 , padding: 10}}>
+                        <View styleName="horizontal h-center" style={{marginBottom: 20}}>
+                            <Title style={styles.label}>Term & Condition</Title>
                         </View>
+                        <PDFReader
+                            source={{
+                                uri: 'https://resources-static.s3-ap-southeast-1.amazonaws.com/pdf/AMG+T_C.pdf',
+                            }}
+                        />
                     </ScrollView>
                     <View styleName="horizontal h-center" style={{marginBottom: 30}}>
                         <Button 

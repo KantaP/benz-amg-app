@@ -173,7 +173,7 @@ const SettingScreen = ({navigation , state , onStateChange , onSignOut}) => (
                 styleName="horizontal v-center" 
                 style={styles.blockView}
             >
-                <Caption>Version 0.0.8</Caption>
+                <Caption>Version 1.0.1</Caption>
             </View>
         </ScrollView>
     </Screen>

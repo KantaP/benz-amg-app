@@ -305,11 +305,11 @@ export default class App extends React.Component {
     
   componentDidMount() {
     // AppState.addEventListener('change', this._handleAppStateChange);
-    Updates.checkForUpdateAsync().then(update => {
-      if (update.isAvailable) {
-        this.setState({showUpdate: true});
-      }
-    });
+    // Updates.checkForUpdateAsync().then(update => {
+    //   if (update.isAvailable) {
+    //     this.setState({showUpdate: true});
+    //   }
+    // });
   }
 
   doUpdate = () => {

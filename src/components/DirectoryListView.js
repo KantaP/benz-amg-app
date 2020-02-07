@@ -1,11 +1,10 @@
 import React from 'react';
-import AlphabetListView from 'react-native-alphabetlistview';
+import AlphabetListView from './react-native-alphabetlistview';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View , Text, TouchableOpacity , Divider  , Image , Title , Caption , TextInput} from '@shoutem/ui';
 import _ from 'lodash';
-import { ScrollView } from 'react-native-gesture-handler';
-
+import { ScrollView } from 'react-native';
 const initLists = {
     A: [],
     B: [],

@@ -9,11 +9,13 @@ import {
     Button ,
     DropDownMenu ,
     Row,
-    ListView
+    ListView,
+    Text
 } from '@shoutem/ui';
 import { navigatorBarStyle , navTitle } from '../styles';
 import { FontAwesomeIcon } from '../Icon';
-
+import { ScrollView } from 'react-native';
+import PDFReader from 'rn-pdf-reader-js'
 const TermScreen = ({navigation}) => ( 
     <Screen>
         <NavigationBar
@@ -33,6 +35,13 @@ const TermScreen = ({navigation}) => (
             style={navigatorBarStyle}
             styleName="inline"
         />
+        <ScrollView contentContainerStyle={{flex: 1}}>
+            <PDFReader
+                source={{
+                    uri: 'https://resources-static.s3-ap-southeast-1.amazonaws.com/pdf/AMG+T_C.pdf',
+                }}
+            />
+        </ScrollView>
     </Screen>
 )
 

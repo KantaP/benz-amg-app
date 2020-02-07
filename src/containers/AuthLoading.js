@@ -23,12 +23,15 @@ class AuthLoadingContainer extends React.Component {
 
     async componentDidMount() {
         try {
+           
             if(!this.props.firstTime.agreeTerm) {
                 this.props.navigation.navigate('FirstTerm');
                 return;
             }
             
+
             let userData = await this.getUser();
+            // let userData = this.props.auth.user;
             // console.log('user data' , userData)
             if(!userData) {
                 this.props.navigation.navigate('Auth');
@@ -41,6 +44,7 @@ class AuthLoadingContainer extends React.Component {
             if(
                 !myProfile.data.getUser.active ||
                 (
+                    myProfile.data.getUser.hasOwnProperty('memberExpiredAt') &&
                     myProfile.data.getUser.memberExpiredAt !== null &&
                     moment().isAfter(expiredAt, 'day')
                 )
@@ -49,7 +53,7 @@ class AuthLoadingContainer extends React.Component {
                 this.props.navigation.navigate('Auth');
                 // this.setState({ showSpinner: false });
                 return false;
-            }
+            } 
             // console.log(myProfile.data.getUser);
             this.props.setUserProfile(myProfile.data.getUser);
             
@@ -64,14 +68,17 @@ class AuthLoadingContainer extends React.Component {
             // console.log(listUserWhoBlockCurrentUser);
             
             this._notificationSubscription = Notifications.addListener(this._handleNotification);
-            console.log(myProfile.data.getUser.image);
-            sendBirdService.connect(myProfile.data.getUser.id);
-            sendBirdService.updateProfile(myProfile.data.getUser.id , {
+            // console.log(myProfile.data.getUser.image);
+            await sendBirdService.connect(myProfile.data.getUser.id);
+            await sendBirdService.updateProfile(myProfile.data.getUser.id , {
                 nickname: myProfile.data.getUser.firstName + ' ' + myProfile.data.getUser.lastName,
                 profile_url: myProfile.data.getUser.image || 'https://resources-static.s3-ap-southeast-1.amazonaws.com/images/user-blank.jpg'
             })
             .then((json)=>{
                 console.log('update sendbird profile');
+            })
+            .catch((error) => {
+                throw new Error('sendbird error')
             })
     
             this.registerPushNotifications()
@@ -81,7 +88,8 @@ class AuthLoadingContainer extends React.Component {
                 API.graphql(graphqlOperation(updateUser , {input: { id:myProfile.data.getUser.id , pushToken: token}}));
             })
             .catch((error)=>{
-                console.log(error);
+                // console.log(error);
+                throw new Error('register push noti error')
             })
 
             this.getCurrentPosition();
@@ -95,7 +103,7 @@ class AuthLoadingContainer extends React.Component {
              
         }catch(error) {
             console.log(error);
-            console.log(`Error: ${error.message}`)
+            // console.log(`Error: ${error.message}`)
             this.props.navigation.navigate('Auth');
         }
         

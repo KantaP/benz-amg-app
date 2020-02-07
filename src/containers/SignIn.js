@@ -22,7 +22,7 @@ class SignInContainer extends React.Component {
 
     
     onOpenWeb = (path) => {
-        const site = 'http://mup-env-amgclubthailand.ium2ebz7mx.ap-southeast-1.elasticbeanstalk.com';
+        const site = 'https://app.amgclubthailand.com';
         Linking.openURL(site + '/' + path);
     }
 
@@ -39,7 +39,7 @@ class SignInContainer extends React.Component {
         setTimeout(async()=>{
             try {
                 const user = await Auth.signIn(username, password)
-                // console.log('user successfully signed in!', user)
+                console.log('user successfully signed in!', user)
                 const userProfile = await API.graphql(graphqlOperation(getUser , {id: user.attributes.sub}));
                 let expiredAt = moment(userProfile.data.getUser.memberExpiredAt);
                 if(
@@ -51,6 +51,7 @@ class SignInContainer extends React.Component {
                 ) {
                     toastRefService.get().show('Your username has not been activated or already expired');
                     this.setState({ showSpinner: false });
+                    // alert('test');
                     return false;
                 }
                 this.props.authenticated(user);

@@ -132,7 +132,7 @@ const SignInComponent = ({navigation , onSignIn , onChangeText , onShowSpinner ,
             }
           </View>
       </View>
-      <View styleName="horizontal v-center space-between" style={{height: (height * 10) / 100 , paddingBottom: 30}}>
+      <View styleName="horizontal v-center h-center" style={{height: (height * 10) / 100 , paddingBottom: 30}}>
         <Button styleName="clear" onPress={()=>{
           if(onOpenWeb) {
             onOpenWeb('forgotpassword')
@@ -140,14 +140,14 @@ const SignInComponent = ({navigation , onSignIn , onChangeText , onShowSpinner ,
         }}>
           <Text style={textStyle}>{screenProps.t('forgotpassword')}</Text>
         </Button>
-        <Button styleName="clear" onPress={()=>{
+        {/* <Button styleName="clear" onPress={()=>{
           // if(onOpenWeb) {
           //   onOpenWeb('signup')
           // }
           navigation.push('Register')
         }}>
           <Text style={textStyle}>{screenProps.t('registration')}</Text>
-        </Button>
+        </Button> */}
       </View>
       </RNImage>
     </Screen>

@@ -48,7 +48,7 @@ const ContactScreen = ({navigation , onStateChange , actions  , state , setSheet
             styleName="inline"
         />
         <ScrollView>
-            <View styleName="horizontal v-center h-center" style={{padding: 10}}>
+            {/* <View styleName="horizontal v-center h-center" style={{padding: 10}}>
                 <Title>
                     My Privilege
                 </Title>
@@ -57,7 +57,7 @@ const ContactScreen = ({navigation , onStateChange , actions  , state , setSheet
                 <Caption>
                 Unless otherwise stipulated, all brand names featured Websites are legally protected trademarks ...
                 </Caption>
-            </View>
+            </View> */}
             <View styleName="vertical" style={{paddingHorizontal: 10}}>
                 <Touchable onPress={()=>{
                     actions('callcenter');
