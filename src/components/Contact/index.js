@@ -13,7 +13,8 @@ import {
     Tile ,
     Overlay ,
     Text,
-    Touchable,
+    Touchable, 
+    DropDownMenu
 } from '@shoutem/ui';
 
 import { navigatorBarStyle , formButtonStyle , formButtonDisableStyle , navTitle } from '../styles';
@@ -22,13 +23,14 @@ import { ScrollView , TouchableOpacity , KeyboardAvoidingView , TouchableWithout
 import RBSheet from "react-native-raw-bottom-sheet";
 import AutoExpandingTextInput from '../AutoExpandingTextInput';
 let facebook = <FontAwesomeIcon name={'facebook'} style={{color:'#fff' , fontSize: 32}} />
-let twitter = <FontAwesomeIcon  name={'twitter'} style={{color:'#fff' , fontSize: 32}} />
-
+let twitter = <FontAwesomeIcon  name={'twitter'} style={{color:'#fff' , fontSize: 32}} /> 
+let instagram = <FontAwesomeIcon  name={'instagram'} style={{color:'#fff' , fontSize: 32}} />
 const styles = {
     formGroup : {height: 50 , borderTopWidth: 1 , borderTopColor: '#ccc' , paddingTop: 10 , marginBottom: 15}
 }
 
-const ContactScreen = ({navigation , onStateChange , actions  , state , setSheetRef , setFeedbackSheetRef , openFacebook , openTwitter , onSubmit}) => (
+
+const ContactScreen = ({navigation , onStateChange , actions  , state , setSheetRef , setFeedbackSheetRef , openFacebook , openTwitter , onSubmit , openIG}) => (
     <Screen>
         <NavigationBar
             hasHistory={true}
@@ -143,13 +145,34 @@ const ContactScreen = ({navigation , onStateChange , actions  , state , setSheet
                         <Screen style={{backgroundColor:'#fff'}}>
                             <ScrollView>
                                 <View>
-                                    <TextInput placeholder="* Topic" onChangeText={(text)=>{
+                                    {/* <DropDownMenu
+                                        styleName="horizontal"
+                                        options={state.types}
+                                        selectedOption={state.feedbackTopic ? state.feedbackTopic : state.types[0]}
+                                        onOptionSelected={(type) => {
+                                            if(type.title === 'Please select type') return false;
+                                            onStateChange('feedbackTopic' , type)
+                                        }}
+                                        titleProperty="title"
+                                        valueProperty="types.title"
+                                    /> */}
+                                    <DropDownMenu
+                                        styleName="horizontal"
+                                        options={state.types}
+                                        selectedOption={state.selectedType ? state.selectedType : state.types[0]}
+                                        onOptionSelected={(type) => {
+                                            if(type.title === 'Please select type') return false;
+                                            onStateChange('selectedType' , type)
+                                        }}
+                                        titleProperty="title"
+                                        valueProperty="types.title"
+                                    />
+                                    {/* <TextInput placeholder="* Topic" onChangeText={(text)=>{
                                         if(onStateChange) onStateChange('feedbackTopic' , text);
-                                    }}  />
+                                    }}  /> */}
                                 </View>
                                 <View>
                                     <AutoExpandingTextInput
-                                        
                                         placeholder="* Message"
                                         onChangeText={(text)=>{
                                             if(onStateChange) onStateChange('feedbackMessage' , text);
@@ -157,7 +180,7 @@ const ContactScreen = ({navigation , onStateChange , actions  , state , setSheet
                                     />
                                 </View>
                                 <View styleName="horizontal h-center" style={{padding: 10}}>
-                                    <Button style={(state.feedbackTopic.trim() && state.feedbackMessage.trim()) ? formButtonStyle : {...formButtonStyle , ...formButtonDisableStyle}} 
+                                    <Button style={(state.selectedType && state.feedbackMessage.trim()) ? formButtonStyle : {...formButtonStyle , ...formButtonDisableStyle}} 
                                         onPress={()=>{
                                             if(onSubmit) {
                                                 onSubmit()
@@ -197,6 +220,12 @@ const ContactScreen = ({navigation , onStateChange , actions  , state , setSheet
                             onPress={openTwitter}
                         >
                             {twitter}
+                        </Button>
+                        <Button 
+                            style={{marginLeft:10 , width: 64, height: 64 , borderRadius: 32 , backgroundColor: '#1DA1F2'}}
+                            onPress={openIG}
+                        >
+                            {instagram}
                         </Button>
                     </View>
             </RBSheet>

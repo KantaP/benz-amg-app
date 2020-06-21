@@ -3,7 +3,7 @@ import React from 'react';
 // import { graphql } from 'react-apollo';
 // import gql from 'graphql-tag';
 import { connect } from 'react-redux';
-
+import { setListUserBlocks } from '../actions/user';
 import BlockScreen from '../components/Block';
 
 class BlockContainer extends React.Component {
@@ -17,10 +17,15 @@ class BlockContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+    listUserBlocksData: state.user.listUserBlocks,
     userProfile: state.user.userProfile ,
 })
 
-const withConnect = connect(mapStateToProps)(BlockContainer);
+const mapDispatchToProps = (dispatch) => ({
+    setListUserBlocks: (listUserBlocks) => dispatch(setListUserBlocks(listUserBlocks)),
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)(BlockContainer);
 
 
 

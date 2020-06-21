@@ -67,7 +67,7 @@ import ToastRefService from './services/ToastRefService';
 import FirstTermContainer from './containers/FirstTerm';
 import TutorialContainer from './containers/Tutorial';
 import RegisterContainer from './containers/Register';
-
+import alertService from './services/AlertService';
 
 console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
 
@@ -249,7 +249,8 @@ export default class App extends React.Component {
   state = {
       isReady: false ,
       locale: Localization.locale ,
-      showUpdate: false
+      showUpdate: false,
+      appState: AppState.currentState,
   }
 
   // cacheImages(images) {
@@ -303,17 +304,49 @@ export default class App extends React.Component {
     // console.log(client);
   } 
     
-  componentDidMount() {
-    // AppState.addEventListener('change', this._handleAppStateChange);
-    // Updates.checkForUpdateAsync().then(update => {
-    //   if (update.isAvailable) {
-    //     this.setState({showUpdate: true});
-    //   }
-    // });
+  async componentDidMount() {
+    // setInterval(()=>{
+    //   this._handleUpdate();
+    // }, 10000);
+    AppState.addEventListener('change', this._handleAppStateChange);
+  } 
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  doUpdate = () => {
-    Updates.reload();
+  _handleUpdate = async() => {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          // ... notify user of update ...
+          alertService.alert({
+            content:'There is newer version of AMG Club Thailand. The application will be updated automatically.' ,
+            buttons: [{
+              text: 'ok',
+              onPress:()=>{
+                Updates.reloadFromCache();
+              }
+            }]
+          })
+          return true;
+      }
+      return false;
+    }catch(error) {
+      // console.log(error);
+      return false;
+    }
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      this._handleUpdate();
+    }
+    this.setState({appState: nextAppState});
   }
 
   render() {
@@ -339,6 +372,7 @@ export default class App extends React.Component {
                       t: this.t,
                       locale: this.state.locale,
                       setLocale: this.setLocale,
+                      appUpdateVersion: this._handleUpdate
                     }}
                   />
                   <Toast 

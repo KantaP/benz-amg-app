@@ -80,7 +80,7 @@ const HomeScreen = (
             and: mixedBlock.map((item)=>{
                 return {
                     owner: {
-                        ne: item.userId
+                        ne: item.blockUserId
                     }
                 }
             })
@@ -175,14 +175,15 @@ const HomeScreen = (
                             
                             if(result.loading) return <View style={{padding: 10}}><PostPlaceHolder /></View>;
                             if(result.error) return new Error(result.error);
+                            if(!data.postsByActive) return null;
                             return (
                                 <PostList
                                     data={[...state.pinPost , ...data.postsByActive.items]}
                                     navigation={navigation}
                                     refreshing={state.refreshing}
                                     refetch={()=>{
-                                        refetchPost();
-                                        refetch();
+                                        setTimeout(()=> refetch() , 1000);
+                                        refetchPost()
                                     }}
                                     loadMore={()=>{
                                         if(data.postsByActive.nextToken && !loadMore) {
@@ -194,7 +195,9 @@ const HomeScreen = (
                                                     nextToken: data.postsByActive.nextToken
                                                 },
                                                 updateQuery: (prev, { fetchMoreResult }) => {
+                                                    
                                                     if (!fetchMoreResult) return prev;
+                                                    if(!prev.postsByActive) return prev;
                                                     // if(nextToken === fetchMoreResult.itemsByPinCreated.nextToken) return prev;
                                                     let concatArray = [...prev.postsByActive.items , ...fetchMoreResult.postsByActive.items];
                                                     let uniqueValue = getUnique(concatArray , 'id');
@@ -221,7 +224,7 @@ const HomeScreen = (
                                             },
                                             updateQuery: (prev, { subscriptionData }) => {
                                                 // loadMore = false
-                                                console.log(subscriptionData);
+                                                // console.log(subscriptionData);
                                                 // console.log('subscription data create post' , subscriptionData)
                                                 // if (!subscriptionData.data) return prev;
                                                 // const newPostItem = subscriptionData.data.onCreatePostImage;
@@ -248,6 +251,7 @@ const HomeScreen = (
                                                 // loadMore = false
                                                 // console.log('subscription data create post' , subscriptionData)
                                                 if (!subscriptionData.data) return prev;
+                                                if(!prev.postsByActive) return prev;
                                                 const newPostItem = subscriptionData.data.onCreatePost;
                                                 const idAlreadyExists = prev.postsByActive.items.filter(item => {
                                                                             return item.id === newPostItem.id;
@@ -271,6 +275,7 @@ const HomeScreen = (
                                             updateQuery: (prev, {subscriptionData})=>{
                                                 // loadMore = false;
                                                 if (!subscriptionData.data) return prev;
+                                                if(!prev.postsByActive) return prev;
                                                 const deletePostItem = subscriptionData.data.onDeletePost;
                                                 // console.log('delete post')
                                                 return Object.assign({}, prev, {

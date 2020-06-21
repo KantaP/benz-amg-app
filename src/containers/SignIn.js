@@ -8,6 +8,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { getUser } from '../graphql/queries'; 
 import toastRefService from '../services/ToastRefService';
 import { Linking } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import moment from 'moment';
 class SignInContainer extends React.Component {
 
@@ -21,9 +22,10 @@ class SignInContainer extends React.Component {
     }
 
     
-    onOpenWeb = (path) => {
+    onOpenWeb = async(path) => {
+
         const site = 'https://app.amgclubthailand.com';
-        Linking.openURL(site + '/' + path);
+        let result = await WebBrowser.openBrowserAsync(site + '/' + path);
     }
 
     signIn = async () => {

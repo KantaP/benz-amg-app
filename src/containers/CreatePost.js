@@ -62,7 +62,7 @@ class CreatePostContainer extends React.Component {
             }
         );
         let post = this.props.navigation.getParam('post' , undefined);
-        // console.log('edit ,post' , post);
+        console.log('edit ,post' , post);
         if(post) {
             this.setState((state)=>{
                 state = Object.assign({} , state , post);
@@ -188,17 +188,14 @@ class CreatePostContainer extends React.Component {
                     await this.setState({loading: true});
                     const id = uuidV4();
                     const createdAt = moment().format();
-                    let place = (!this.state.location.placeName)
-                                ? {
-                                    placeName:  'null' ,
-                                    placeLatLng: 'null'
-                                } : this.state.location
+                    let place = (this.state.location.placeName)
+                                ? this.state.location
+                                : {} ;
                     const postDetails = {
                         id ,
                         content: this.state.content , 
                         enableComment: this.state.commentFeature ,
                         tags: this.state.tags ,
-                        location: place ,
                         postPostOfUserId: this.props.user.userProfile.id ,
                         type: 'post' ,
                         radeemQuota: 0,
@@ -206,6 +203,9 @@ class CreatePostContainer extends React.Component {
                         pin:'off',
                         active:'on'
                     };
+                    if(Object.keys(place).length > 0) {
+                        postDetails['location'] = place;
+                    }
                     // console.log(postDetails);
                     // this.props.requestStarted();
                     this.props.onAddPost(postDetails);
@@ -235,21 +235,22 @@ class CreatePostContainer extends React.Component {
                     await this.setState({loading: true});
                     // console.log(this.state.identity)
                     const id = this.state.id
-                    let place = (!this.state.location.placeName)
-                                ? {
-                                    placeName:  'null' ,
-                                    placeLatLng: 'null'
-                                } : this.state.location
+                    
+                    let place = (this.state.location !== null && Object.keys(this.state.location).length > 0)
+                                ? { placeName : this.state.location.placeName , placeLatLng : this.state.location.placeLatLng }
+                                : {} ;
                     const postDetails = {
                         id ,
                         content: this.state.content , 
                         enableComment: this.state.commentFeature ,
                         tags: this.state.tags ,
-                        location: place ,
                         postPostOfUserId: this.props.user.userProfile.id ,
                         type: 'post' ,
                         radeemQuota: 0,
                     };
+                    if(Object.keys(place).length > 0) {
+                        postDetails['location'] = place;
+                    }
                     // console.log('edit post detail' , postDetails);
                     // this.props.requestStarted();
                     this.props.updatePost(postDetails);

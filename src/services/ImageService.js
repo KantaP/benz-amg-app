@@ -22,7 +22,7 @@ class ImageService {
             const manipResult = await ImageManipulator.manipulateAsync(
                 result.uri,
                 [{resize: {width: result.width / 3}}],
-                { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
+                { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
             );
             callback(manipResult);
         }

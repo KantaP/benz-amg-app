@@ -125,10 +125,13 @@ const CreatePostScreen = ({navigation , onStateChange , state , onAddTag , onPic
                     value={state.content}
                 />
             </View>
-            <View styleName="horizontal v-center space-between" style={styles.formGroup}>
+            {/* <View styleName="horizontal v-center space-between" style={styles.formGroup}>
                 <Text>Location</Text>
                 {
-                    state.location.placeName 
+                    (
+                        state.location !== null &&
+                        state.location.hasOwnProperty('placeName') 
+                    )
                     ? <View styleName="horizontal v-center" style={{flex: 0.7}}><Text style={{flex: 1}} numberOfLines={1}>{state.location.placeName}</Text></View>
                     : null
                 }
@@ -145,26 +148,35 @@ const CreatePostScreen = ({navigation , onStateChange , state , onAddTag , onPic
                         <EntypoIcon name="location-pin" style={styles.iconInSymbol} />
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <View styleName="horizontal v-center space-between" style={styles.formGroup}>
                 <Text>Tags</Text>
                 <View styleName="horizontal v-center h-center wrap" style={{flex: 1 }}>
                     {
                         (state.tags) &&
                         state.tags.map((tag)=>(
-                            <View 
-                            styleName="horizontal v-center space-between" 
-                            style={{marginLeft:5 , backgroundColor:'#f6f6f6', padding: 8 , borderRadius: 10}}>
-                                <Text 
-                                style={{color:'#fff'}}>
-                                    {tag}
-                                </Text>
+                            <TouchableOpacity
+                                onPress={()=>{
+                                    if(onStateChange) {
+                                        let filterTags = [...state.tags.filter((item)=>item!==tag)]
+                                        onStateChange('tags' , filterTags)
+                                    }
+                                }}
+                            >
                                 <View 
-                                styleName="horizontal v-center h-center" 
-                                style={{marginLeft: 3 , width: 16 , height: 16 , borderRadius: 8 , backgroundColor: '#fff'}}>
-                                    <FontAwesomeIcon name="close" style={{color: '#ccc' , fontSize: 12}} />
+                                styleName="horizontal v-center space-between" 
+                                style={{marginLeft:5 , backgroundColor:'#f6f6f6', padding: 8 , borderRadius: 10}}>
+                                    <Text 
+                                    style={{color:'#000'}}>
+                                        {tag}
+                                    </Text>
+                                    <View 
+                                    styleName="horizontal v-center h-center" 
+                                    style={{marginLeft: 3 , width: 16 , height: 16 , borderRadius: 8 , backgroundColor: '#fff'}}>
+                                        <FontAwesomeIcon name="close" style={{color: '#ccc' , fontSize: 12}} />
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         ))
                     }
                 </View>

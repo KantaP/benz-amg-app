@@ -55,6 +55,7 @@ class UserDetailContainer extends React.Component {
         if(this.state.block) {
             this.props.deleteUserBlock({id: this.state.blockId})
             .then((result)=>{
+                console.log('before remove'  , this.props.listUserBlocks);
                 let removeBlockUserId = this.props.listUserBlocks.filter((item)=>item.id !== this.state.blockId);
                 this.props.setListUserBlocks(removeBlockUserId);
                 this.setState({block: false , blockId: ''});

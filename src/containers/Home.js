@@ -29,9 +29,12 @@ class HomeContainer extends React.Component {
     componentDidMount() {
         // console.log(this.props.firstTime.greetingPost);
         this.setState({readyToQuery: true});
-        if(!this.props.userProfile.firstLogin || this.props.userProfile.firstLogin === null) {
-            this.setState({showGreeting: true})
-        }
+        setTimeout(()=>{
+            if(!this.props.userProfile.firstLogin || this.props.userProfile.firstLogin === null) {
+                this.setState({showGreeting: true})
+            }
+        }, 1000);
+       
         this.fetchPost();
         // setInterval(()=>{
         //     Updates.checkForUpdateAsync().then(async update => {
@@ -42,6 +45,7 @@ class HomeContainer extends React.Component {
         //         }
         //     });
         // }, 300000)
+        this.props.screenProps.appUpdateVersion();
     }
 
     doUpdate = () => {
@@ -49,20 +53,22 @@ class HomeContainer extends React.Component {
     }
 
     fetchPost = async() => {
+        
         try {
-            let mixedBlock = [...this.props.listUserBlocks,...this.props.listUserWhoBlockCurrentUser];
+            let mixedBlock = [...this.props.listUserBlocks ,...this.props.listUserWhoBlockCurrentUser];
             let filter = {}
             if(mixedBlock.length > 0) { 
                 filter = {
                     and: mixedBlock.map((item)=>{
                         return {
                             owner: {
-                                ne: item.userId
+                                ne: item.blockUserId
                             }
                         }
                     })
                 }
             }
+            // console.log(mixedBlock);
             let pinPost = await API.graphql(graphqlOperation(itemsByPin, {
                 pin: 'on',
                 expireAt: {
@@ -78,7 +84,7 @@ class HomeContainer extends React.Component {
             //     },
             //     filter: filter
             // }))
-            console.log('pin' , pinPost);
+            // console.log('pin' , pinPost);
             this.setState({pinPost: pinPost.data.itemsByPin.items});
             // console.log('pin post' , pinPost.data.itemsByPin.items.length);
             // console.log('user post' , userPost.data.itemsByPostType.items.length);

@@ -67,6 +67,7 @@ const PostDetailScreen = ({user , navigation , post , onAddComment , onStateChan
                 <View style={{flex: 0.2}}>
                     <TouchableOpacity 
                         onPress={()=>{
+                            if(!state.message) return;
                             if(onAddComment) onAddComment()
                         }}
                         style={{

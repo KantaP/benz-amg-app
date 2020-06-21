@@ -142,8 +142,9 @@ class DirectoryListView extends React.Component  {
         // console.log(this.props.listUsers);
         // console.log(this.state.listUsers.data);
         let mixedBlockUser = [...this.props.listUserBlocks, ...this.props.listUserWhoBlockCurrentUser];
-        console.log(mixedBlockUser)
-        let hideUsers = mixedBlockUser.map((item)=>item.userId);
+        // console.log(mixedBlockUser)
+        let hideUsers = mixedBlockUser.map((item)=>item.blockUserId);
+        // console.log('hideusers' , hideUsers)
         this.setState({
             listUsers: {
                 data: Object.assign(
@@ -168,8 +169,9 @@ class DirectoryListView extends React.Component  {
                 listUsers = listUsers
                             .filter((user)=>!_.isNull(user.firstName) && !_.isNull(user.lastName) && user.id.toLowerCase() !== 'admin')
                             .filter((item)=>{
-                                return item.firstName.toLowerCase().includes(text.toLowerCase())
-                            }).value();
+                                return item.firstName.toLowerCase().includes(text.toLowerCase()) || item.lastName.toLowerCase().includes(text.toLowerCase())
+                            })
+                            .value();
                 this.setState({
                     listUsers: {
                         data: Object.assign(

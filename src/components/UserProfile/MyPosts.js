@@ -15,7 +15,7 @@ let loadMore = false;
 const MyPostsView = ({userId , isFocused}) => (
     (isFocused)
     ? (
-        <Query query={gql(itemsByPostType)} variables={{type: 'post' , filter: {owner: {eq: userId}} , limit: 100 , sortDirection:'DESC'}}>
+        <Query query={gql(itemsByPostType)} fetchPolicy="network-only" errorPolicy="ignore" variables={{type: 'post' , filter: {owner: {eq: userId}} , limit: 100 , sortDirection:'DESC'}}>
         {
             ({data , loading , error , fetchMore }) => {
                 if(loading) return <View style={{padding: 10}}><PostPlaceHolder /></View>;

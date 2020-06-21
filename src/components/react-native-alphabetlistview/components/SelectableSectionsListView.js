@@ -240,7 +240,7 @@ export default class SelectableSectionsListView extends Component {
       dataSource = this.state.dataSource.cloneWithRowsAndSections(data, sections);
     }
 
-    console.log('dataSource' , dataSource)
+    // console.log('dataSource' , dataSource)
 
     const renderFooter = this.props.footer ?
       this.renderFooter :
@@ -262,7 +262,7 @@ export default class SelectableSectionsListView extends Component {
 
     props.style = void 0;
 
-    console.log('dataSource' , props.dataSource)
+    // console.log('dataSource' , props.dataSource)
 
     return (
       <View ref="view" style={[styles.container, this.props.style]}>

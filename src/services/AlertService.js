@@ -9,8 +9,21 @@ class AlertService {
           })();
     }
 
-    alert({title = '' , content = '' , buttons = [] , options = {}}) {
-        this.alertItem.alert(title,content,buttons,options);
+    alert({
+        title = '' , 
+        content = '' , 
+        buttons = [{text: 'OK', onPress: () => console.log('OK Pressed')}] , 
+        options = {},
+        timeOut = 0
+    }) {
+        if(timeOut > 0) {
+            setTimeout(()=>{
+                this.alertItem.alert(title,content,buttons,options);
+            },timeOut)
+        } else {
+            this.alertItem.alert(title,content,buttons,options);
+        }
+        
     }
 }
 

@@ -61,7 +61,7 @@ const CommentList = ({postId}) => (
                                     if (!subscriptionData.data) return prev;
                                     const newCommentItem = subscriptionData.data.onCreateComment;
                                     // console.log('new comment' , newCommentItem);
-                                    // if(prev.listComments.id !== newCommentItem.postComment.id) return prev;
+                                    if(prev.listComments.id !== newCommentItem.postComment.id) return prev;
                                     return Object.assign({}, prev, {
                                         listComments: Object.assign({} , prev.listComments , {
                                             items: [newCommentItem , ...prev.listComments.items ]

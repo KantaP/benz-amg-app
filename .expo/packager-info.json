@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://gz-7xf.acromod.benz-amg-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.gz-7xf.acromod.benz-amg-app.exp.direct",
+  "ngrokPid": 76792,
   "webpackServerPort": null
 }

@@ -17,7 +17,19 @@ class ContactContainer extends React.Component {
     state = {
         feedbackTopic: "" ,
         feedbackMessage: "" ,
-        loading: false
+        loading: false ,
+        selectedType: "",
+        types: [
+            { title: "Please select type"},
+            { title: "Rally" } ,
+            { title: "Wine & Cigar Tasting" } ,
+            { title: "Shopping & Fashion"} ,
+            { title: "Traveling"} ,
+            { title: "Cooking Class" } ,
+            { title: "Movie"} ,
+            { title: "Mercedes-AMG Site Visit Program in Affalterbach"} ,
+            { title: "Other"} ,
+        ]
     }
 
     sheetRef = null;
@@ -32,7 +44,7 @@ class ContactContainer extends React.Component {
     }
 
     openFacebook = () => {
-        Linking.openURL('https://www.facebook.com/amgclubthailand');
+        Linking.openURL('https://www.facebook.com/AMGBrandCenterBangkok/');
         this.sheetRef.close();
     }
 
@@ -41,12 +53,17 @@ class ContactContainer extends React.Component {
         this.sheetRef.close();
     }
 
+    openIG = () => {
+        Linking.openURL(`https://instagram.com/amgbrandcenter?igshid=arxxwwmlm3xw`);
+        this.sheetRef.close();
+    }
+
     onSubmit = async() => {
         await this.setState({loading: true});
         try {
             let variables = {
                 input: {
-                    topic: this.state.feedbackTopic,
+                    topic: this.state.selectedType.title,
                     message: this.state.feedbackMessage,
                     feedbackUserId: this.props.userProfile.id,
                     createdAtUnix: moment().valueOf(),
@@ -70,8 +87,8 @@ class ContactContainer extends React.Component {
         }
         if(type === 'address') {
             // go to address link
-            const lat = 13.7364787;
-            const lng = 100.6354895;
+            const lat = 13.7364735;
+            const lng = 100.6376782;
             const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
             const latLng = `${lat},${lng}`;
             const label = 'Benz TTC Motor';
@@ -105,6 +122,7 @@ class ContactContainer extends React.Component {
                  setFeedbackSheetRef={this.setFeedbackSheetRef}
                  onSubmit={this.onSubmit}
                  onStateChange={onStateChange.bind(this)}
+                 openIG={this.openIG}
                 />;
     }
 }

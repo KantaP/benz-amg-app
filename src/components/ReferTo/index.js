@@ -65,11 +65,13 @@ const ReferToScreen = ({onAddRefer , userProfile , navigation , state , onSelect
             style={navigatorBarStyle}
             styleName="inline"
         />
-        <ListUsers
-            listUsers={listUsers}
-            enableSelect={true}
-            onSelectUser={onSelectUser}
-        />
+        {/* <View style={{paddingBottom: 30}}>  */}
+            <ListUsers
+                listUsers={listUsers}
+                enableSelect={true}
+                onSelectUser={onSelectUser}
+            />
+        {/* </View> */}
     </Screen>
 )
 

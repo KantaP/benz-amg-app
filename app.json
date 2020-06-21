@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber" : "1",
+      "buildNumber": "1",
       "bundleIdentifier": "com.i3gateway.benzamg",
       "supportsTablet": false,
       "config": {
@@ -32,7 +32,9 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Please allow to access photo library for add photo in your post",
         "NSLocationWhenInUseUsageDescription": "Please allow to access your location to find a place around you and share people in your post"
-      }
+      },
+      "publishBundlePath": "ios/amg-club-thailand/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/amg-club-thailand/Supporting/shell-app-manifest.json"
     },
     "android": {
       "package": "com.i3gateway.benzamg",
@@ -42,8 +44,8 @@
         }
       },
       "googleServicesFile": "./google-services.json",
-      "versionCode" : 2,
-      "permissions" : [
+      "versionCode": 5,
+      "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "CAMERA",
@@ -69,7 +71,15 @@
         "com.sec.android.provider.badge.permission.READ",
         "com.sec.android.provider.badge.permission.WRITE",
         "com.sonyericsson.home.permission.BROADCAST_BADGE"
-      ]
-    }
+      ],
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
+    },
+    "isDetached": true,
+    "detach": {
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.13.0-sdk35.0.0-a30ebc9b-3db4-42f4-b677-e468076baf18.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v119-sdk35.0.0-6758e9de-1e10-40f8-863d-ec8972895cf1.tar.gz"
+    },
+    "scheme": "exp088d4d2d767840f1ac7464c6f142df19"
   }
 }

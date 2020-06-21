@@ -140,14 +140,14 @@ const SignInComponent = ({navigation , onSignIn , onChangeText , onShowSpinner ,
         }}>
           <Text style={textStyle}>{screenProps.t('forgotpassword')}</Text>
         </Button>
-        {/* <Button styleName="clear" onPress={()=>{
-          // if(onOpenWeb) {
-          //   onOpenWeb('signup')
-          // }
-          navigation.push('Register')
+        <Button styleName="clear" onPress={()=>{
+          if(onOpenWeb) {
+            onOpenWeb('signup')
+          }
+          // navigation.push('Register')
         }}>
           <Text style={textStyle}>{screenProps.t('registration')}</Text>
-        </Button> */}
+        </Button>
       </View>
       </RNImage>
     </Screen>

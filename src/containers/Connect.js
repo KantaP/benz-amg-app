@@ -26,6 +26,8 @@ class ConnectContainer extends React.Component {
         lastMessage: {},
         loading: false,
         channel: null,
+        deleteMessageId: '',
+        originalMessage: [],
     }
 
     componentDidMount() {
@@ -118,7 +120,7 @@ class ConnectContainer extends React.Component {
                 console.log('curr' , _curr);
                 let messageObj = {
                     _id: uuidv4(),
-                    
+                    messageId: _curr.messageId,
                     createdAt: new Date(_curr.createdAt),
                     user: {
                         _id: _curr._sender.userId,
@@ -147,6 +149,7 @@ class ConnectContainer extends React.Component {
             // var _newMessageList = _SELF.state.messages.concat(_messages.reverse());
             this.setState(previousState => {
                 previousState.messages = [..._messages.reverse()];
+                previousState.originalMessage = [...response];
                 return previousState
             });
         });
@@ -166,12 +169,16 @@ class ConnectContainer extends React.Component {
                 console.log(error);
                 return;
             }
-            // console.log('send message' , message);
+            console.log('send message' , message);
+
             let pushTo = this.props.navigation.getParam('pushTo', "");
             pushNotificationSevice.send({
                 to: pushTo,
                 title: `${this.props.userProfile.firstName} says`,
                 body: sendText ,
+            })
+            this.setState({
+                originalMessage: [...this.state.originalMessage , message] ,
             })
         });
 
@@ -263,12 +270,36 @@ class ConnectContainer extends React.Component {
         });
     }
 
+    _onRemoveMessage = () => {
+        let origins = [...this.state.originalMessage];
+        let find = origins.filter((item)=>item.messageId === this.state.deleteMessageId);
+        // console.log(find);
+        if(find.length > 0) {
+            // console.log('found message')
+            this.state.channel.deleteMessage(find[0] , (response, error) => {
+                if (error) {
+                    console.log('remove message error ' , error);
+                    return;
+                }
+                // console.log('remove from sendbird' , response);
+                this.setState(previousState => {
+                    let tempMessage = previousState.messages.filter((item)=>item.messageId !== this.state.deleteMessageId);
+                    // console.log(tempMessage.map((item)=>item.text));
+                    previousState.messages = tempMessage;
+                    previousState.deleteMessageId = '';
+                    return previousState
+                })
+            })
+        }
+    }
+
     render() {
         return (<ConnectScreen
             {...this.props}
             onSend={this._onSend}
             state={this.state}
             onPickImage={this._pickImage}
+            _onRemoveMessage={this._onRemoveMessage}
         />)
     }
 }

@@ -37,13 +37,35 @@ class HomeSearchContainer extends React.Component {
                     }
                 },
                 {
+                    content: {
+                        contains: this.state.searchText.toLowerCase()
+                    }
+                },
+                {
+                    content: {
+                        contains: this.state.searchText.toUpperCase()
+                    }
+                },
+                {
                     tags: {
                         contains: this.state.searchText
+                    }
+                },
+                {
+                    tags: {
+                        contains: this.state.searchText.toLowerCase()
+                    }
+                },
+                {
+                    tags: {
+                        contains: this.state.searchText.toUpperCase()
                     }
                 }
             ]
         }
-        let posts = await API.graphql(graphqlOperation(listPosts , {filter}));
+        // console.log(filter);
+        let posts = await API.graphql(graphqlOperation(listPosts , {filter , limit: 1000000}));
+        // console.log(posts);
         await this.setState({posts: posts.data.listPosts.items , nextToken: posts.data.listPosts.nextToken ,loading: false})
     }
 

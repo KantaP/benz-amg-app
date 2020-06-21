@@ -23,6 +23,8 @@ class AuthLoadingContainer extends React.Component {
 
     async componentDidMount() {
         try {
+
+            
            
             if(!this.props.firstTime.agreeTerm) {
                 this.props.navigation.navigate('FirstTerm');
@@ -63,6 +65,7 @@ class AuthLoadingContainer extends React.Component {
             // console.log(listUsersWithoutMyId);
 
             this.props.setListUsers(listUsersWithoutMyId);
+            console.log('first data list user block' , listUserBlocks);
             this.props.setListUserBlocks(listUserBlocks);
             this.props.setListUserWhoBlockCurrentUser(listUserWhoBlockCurrentUser);
             // console.log(listUserWhoBlockCurrentUser);
@@ -81,25 +84,22 @@ class AuthLoadingContainer extends React.Component {
                 throw new Error('sendbird error')
             })
     
-            this.registerPushNotifications()
-            .then((token)=>{
-                // console.log('pushtoken' , token);
-                // console.log('variable' , {input: { id:myProfile.data.getUser.id , pushToken: token}})
-                API.graphql(graphqlOperation(updateUser , {input: { id:myProfile.data.getUser.id , pushToken: token}}));
-            })
-            .catch((error)=>{
-                // console.log(error);
-                throw new Error('register push noti error')
-            })
 
-            this.getCurrentPosition();
+            // let token = await this.registerPushNotifications()
+            // await this.getCurrentPosition();
+            let token = "";
+            API.graphql(graphqlOperation(updateUser , {input: { id:myProfile.data.getUser.id , pushToken: token}}))
+            .then((result)=>{
+                console.log('update push token' , result);
+               
+                // initial data
+                this.props.setChangwats(changwats);
+                this.props.setAmphoes(amphoes);
+                this.props.setTambons(tambons);
 
-            // initial data
-            this.props.setChangwats(changwats);
-            this.props.setAmphoes(amphoes);
-            this.props.setTambons(tambons);
-
-            this.ready(); 
+                this.ready(); 
+            });
+            
              
         }catch(error) {
             console.log(error);
@@ -172,7 +172,9 @@ class AuthLoadingContainer extends React.Component {
                 this.props.navigation.navigate('Auth');
                 return false;
             }
-            this.props.navigation.navigate('App');
+            setTimeout(()=>{
+                this.props.navigation.navigate('App');
+            }, 1000)
         // }, 1000)
     }
 

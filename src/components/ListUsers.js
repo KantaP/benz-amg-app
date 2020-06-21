@@ -24,11 +24,15 @@ class ListUsers extends React.Component {
         }, 1000)
     }
 
+    
+
     render() {
-        
+
+        let mixedBlock = [...this.props.listUserBlocks ,...this.props.listUserWhoBlockCurrentUser];
+        // console.log('mixed block'  , mixedBlock);
         return (
-            <View>
-                <View styleName="horizontal h-center" style={{padding: 5 , marginBottom : 20}}>
+            <>
+                <View styleName="horizontal h-center" style={{padding: 5 }}>
                     <View style={{flex: 0.9 , borderBottomWidth: 0.5 , borderBottomColor: '#ccc'}}>
                         <TextInput
                             onChangeText={this.setSearchText}
@@ -37,13 +41,33 @@ class ListUsers extends React.Component {
                     </View>
                 </View>
                 <FlatList
+                   
+                    style={{marginBottom: 30}}
                     removeClippedSubViews
                     data={
                         (this.state.search) 
                         ? _(this.props.listUsers)
-                            .filter((item)=>item.firstName.toLowerCase() === this.state.search.toLowerCase()) 
+                            .filter((item)=>{
+                                let notIn = true;
+                                mixedBlock.map((subItem)=>{
+                                    console.log(subItem.id);
+                                    if(subItem.blockUserId === item.id) notIn = false
+                                })
+                                console.log(item.id , notIn);
+                                return notIn
+                            })
+                            .filter((item)=>item.firstName.toLowerCase() === this.state.search.toLowerCase())
                             .value() 
-                        : this.props.listUsers
+                        : _(this.props.listUsers)
+                            .filter((item)=>{
+                                let notIn = true;
+                                mixedBlock.map((subItem)=>{
+                                    if(subItem.blockUserId === item.id) notIn = false
+                                })
+                                // console.log(item.id , notIn);
+                                return notIn
+                            })
+                            .value()
                     }
                     keyExtractor={(item , index)=>item.id}
                     renderItem={({item}) => {
@@ -52,13 +76,15 @@ class ListUsers extends React.Component {
                     initialNumToRender={8}
                     maxToRenderPerBatch={2}
                 />
-            </View>
+            </>
         )
     }
 }
 
 mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user ,
+    listUserBlocks: state.user.listUserBlocks,
+    listUserWhoBlockCurrentUser: state.user.listUserWhoBlockCurrentUser
 })
 
 export default connect(mapStateToProps)(ListUsers);

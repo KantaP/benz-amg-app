@@ -54,13 +54,14 @@ class MapViewContainer extends React.Component {
         // console.log(googleUrl)
         this.setState({loading: true , search: text ,nearByResults: []} , () => {
             this.toggleSlide();
-            let searchBy = `nearbysearch/json?location=${this.state.x.latitude},${this.state.x.longitude}&radius=1500&keyword=${this.state.search}&key=AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE` 
+            let searchBy = `findplacefromtext/json?input=${encodeURI(this.state.search)}&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE`
+            // let searchBy = `nearbysearch/json?location=${this.state.x.latitude},${this.state.x.longitude}&radius=1500&keyword=${this.state.search}&key=AIzaSyAa9KPr8XL8hMrW3PhevivdIZL1yFr7kyE` 
             let googleUrl = `https://maps.googleapis.com/maps/api/place/${searchBy}`;
             fetch(googleUrl)
             .then((response)=>response.json())
             .then((json)=>{
                 // console.log(json);
-                this.setState({loading: false , nearByResults: json.results , nextPageToken: json.next_page_token} ,()=>{
+                this.setState({loading: false , nearByResults: json.candidates , nextPageToken: json.next_page_token} ,()=>{
                     // this.toggleSlide();
                 });
             })
